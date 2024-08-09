@@ -1,4 +1,4 @@
-import { IPaginationOptions } from 'utils/types/pagination-options'
+import { IPaginationOptions } from '@/utils/types/pagination-options'
 
 interface IData<T> {
   data: T[]
