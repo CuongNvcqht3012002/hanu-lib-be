@@ -1,0 +1,58 @@
+# Need to change
+name: HANU-Library-Deployment
+
+on:
+  push:
+    branches:
+      - production
+
+concurrency:
+  group: ${{ github.workflow }}
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install Dependencies
+        run: yarn install
+      - name: Lint code
+        run: yarn lint
+
+  build:
+    name: Build
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install Dependencies
+        run: yarn install
+      - name: Build
+        run: yarn build
+
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: SSH into VM and Deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VM_HOST }}
+          port: ${{ secrets.VM_PORT }}
+          username: ${{ secrets.VM_USERNAME }}
+          password: ${{ secrets.VM_PASSWORD }}
+          # Need to change /home/...
+          script: |
+            cd /home/hanu-lib-be
+            git checkout production
+            git pull
+            cp .env.production .env
+            yarn dc:prod
+            docker system prune -a -f
+            exit

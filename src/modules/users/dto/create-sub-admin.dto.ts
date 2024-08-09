@@ -1,0 +1,20 @@
+import { Transform } from 'class-transformer'
+import { ApiProperty } from '@nestjs/swagger'
+import { IsNotEmpty, Validate } from 'class-validator'
+import { IsNotExist } from '@/utils/validators/is-not-exists.validator'
+
+export class CreateSubAdminDto {
+  @ApiProperty({ example: 'test@example.com' })
+  @Transform(({ value }) => value?.trim())
+  @Validate(IsNotExist, ['User'], {
+    message: 'Email đã tồn tại',
+  })
+  @IsNotEmpty({ message: 'Email không được để trống' })
+  @IsNotEmpty()
+  email: string
+
+  @ApiProperty({ example: 'John Doe' })
+  @IsNotEmpty({ message: 'Họ và tên không được để trống' })
+  @IsNotEmpty()
+  fullName: string
+}

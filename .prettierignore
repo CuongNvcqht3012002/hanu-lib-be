@@ -1,0 +1,11 @@
+/dist
+/node_modules
+/build
+/.yarn
+coverage
+.vscode
+.DS_Store
+dist
+dist-ssr
+*.local
+/src/modules/sockets/utils/dictionary.ts

@@ -1,0 +1,36 @@
+{
+  "files.autoSave": "onFocusChange",
+  "editor.formatOnSave": false,
+  "terminal.integrated.defaultProfile.windows": "Git Bash",
+  "prettier.useTabs": true,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "vue.updateImportsOnFileMove.enabled": true,
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+  "javascript.preferences.importModuleSpecifier": "non-relative",
+  "javascript.suggest.autoImports": true,
+  "typescript.suggest.autoImports": true,
+  "prettier.semi": false,
+  "editor.suggestSelection": "first",
+  "cSpell.language": "en",
+  "explorer.confirmDelete": true,
+  "git.enableSmartCommit": true,
+  "editor.tabSize": 2,
+  "prettier.singleQuote": true,
+  "prettier.jsxSingleQuote": true,
+  "prettier.enable": true,
+  "autoimport.useSemiColon": false,
+  "cSpell.words": [
+    "Hanu",
+    "middlewares",
+    "typeorm"
+  ],
+  "explorer.compactFolders": false,
+  "editor.wordWrap": "on",
+  "editor.wordWrapColumn": 80,
+  "chat.editor.wordWrap": "on",
+  "auto-rename-tag.activationOnLanguage": [
+    "*"
+  ],
+  "files.trimTrailingWhitespace": true,
+}
