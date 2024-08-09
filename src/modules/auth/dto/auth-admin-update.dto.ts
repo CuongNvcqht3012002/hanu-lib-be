@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsNotEmpty, IsOptional, IsPhoneNumber, MinLength, Validate } from 'class-validator'
+import { IsNotEmpty, IsOptional, IsPhoneNumber, Validate } from 'class-validator'
 import { Transform } from 'class-transformer'
-import { IsNotExist } from 'src/utils/validators/is-not-exists.validator'
+import { IsNotExist } from '@/utils/validations/is-not-exist.validator'
 
 export class AuthAdminUpdateDto {
   @ApiProperty({ example: 'test@example.com' })
@@ -35,10 +35,4 @@ export class AuthAdminUpdateDto {
   @IsNotEmpty({ message: 'Họ và tên không được để trống' })
   @IsOptional()
   fullName?: string
-
-  // @ApiProperty({ example: 'newPassword123' })
-  // @MinLength(6, { message: 'Mật khẩu phải có ít nhất 6 ký tự.' })
-  // @IsNotEmpty({ message: 'Mật khẩu không được để trống' })
-  // @IsOptional()
-  // password?: string
 }
