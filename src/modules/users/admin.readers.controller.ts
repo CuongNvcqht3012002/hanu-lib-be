@@ -1,5 +1,4 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common'
-import { UsersService } from '@/modules/users/users.service'
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { Roles } from '@/modules/roles/roles.decorator'
 import { ROLE_ENUM } from '@/modules/roles/roles.enum'
@@ -11,6 +10,7 @@ import { RIGHT_ENUM } from '@/modules/permission/enums/right.enum'
 import { AdminCreateReaderDto } from '@/modules/users/dto/admin-create-reader.dto'
 import { CoreQueryDto } from '@/utils/core/core-query.dto'
 import { AdminUpdateReaderDto } from '@/modules/users/dto/admin-update-reader.dto'
+import { UsersService } from '@/modules/users/service'
 
 @ApiBearerAuth()
 @Roles(ROLE_ENUM.SUB_ADMIN)
@@ -31,14 +31,16 @@ export class AdminReadersController {
   @Get()
   @Rights(RIGHT_ENUM.VIEW_READERS)
   findList(@Query() query: CoreQueryDto) {
-    return this.readersService.findManyWithPagination(query, false, { role: ROLE_ENUM.USER })
+    return this.readersService.findManyWithPagination(query, { where: { role: ROLE_ENUM.USER } })
   }
 
   @ApiOperation({ summary: 'Admin -  Get detail reader' })
   @Get(':id')
   @Rights(RIGHT_ENUM.VIEW_READERS)
   findOne(@Param('id') id: number) {
-    return this.readersService.findOne({ id, role: ROLE_ENUM.USER })
+    return this.readersService.findOne({
+      where: { id, role: ROLE_ENUM.USER },
+    })
   }
 
   @ApiOperation({ summary: 'Admin - Update reader' })

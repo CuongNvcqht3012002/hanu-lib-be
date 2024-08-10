@@ -51,7 +51,7 @@ export class UsersService extends CoreService<User> {
 
   // READERS
   async toggleLockReader(userId: number, isLocked: boolean) {
-    const user = await this.findOne({ id: userId })
+    const user = await this.findOne({ where: { id: userId } })
 
     user.isLocked = isLocked
     user.countFailedLoginAttempts = 0

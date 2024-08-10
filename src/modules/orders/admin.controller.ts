@@ -21,10 +21,13 @@ export class AdminOrdersController {
   @Get()
   findAll(@Query() query: OrderQueryDto) {
     const { page, limit, status } = query
-    return this.ordersService.findManyWithPagination({ page, limit }, false, { status }, [
-      'user',
-      'room',
-    ])
+    return this.ordersService.findManyWithPagination(
+      { page, limit },
+      {
+        where: { status },
+        relations: ['user', 'room'],
+      }
+    )
   }
 
   @ApiOperation({ summary: 'Admin -  Get Detail Order' })

@@ -37,7 +37,9 @@ export class AdminRoomsController {
   @Get(':id')
   @Rights(RIGHT_ENUM.VIEW_ROOMS)
   findOne(@Param('id') id: number) {
-    return this.roomsService.findOne({ id })
+    return this.roomsService.findOne({
+      where: { id },
+    })
   }
 
   @ApiOperation({ summary: 'Admin - Update room' })

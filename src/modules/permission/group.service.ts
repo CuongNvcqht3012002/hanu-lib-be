@@ -21,7 +21,10 @@ export class GroupService extends CoreService<Group> {
   }
 
   getAllRightsOfGroup(groupId: number) {
-    return this.findOne({ id: groupId }, false, ['rights'])
+    return this.findOne({
+      where: { id: groupId },
+      relations: ['rights'],
+    })
   }
 
   async updateGroupsInUser(userId: number, groupIds: number[]) {
@@ -40,7 +43,7 @@ export class GroupService extends CoreService<Group> {
   }
 
   async updateRightsInGroup(groupId: number, rightsIds: number[]) {
-    const group = await this.findOne({ id: groupId }, false, ['rights'])
+    const group = await this.getAllRightsOfGroup(groupId)
 
     const rights = await this.rightRepository.findBy({ id: In(rightsIds) })
 

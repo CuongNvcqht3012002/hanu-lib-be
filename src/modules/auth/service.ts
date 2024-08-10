@@ -98,7 +98,7 @@ export class AuthService {
 
   async validateAdminLogin(loginDto: AuthUsernameLoginDto): Promise<IAuthResponse> {
     const user = await this.usersService.findOne({
-      username: loginDto.username,
+      where: { username: loginDto.username },
     })
 
     const isValidPassword = await bcrypt.compare(loginDto.password, user.password)
@@ -113,7 +113,7 @@ export class AuthService {
 
   async validateUserLogin(loginDto: AuthStudentIdLoginDto): Promise<IAuthResponse> {
     const user = await this.usersService.findOne({
-      studentId: loginDto.studentId,
+      where: { studentId: loginDto.studentId },
     })
 
     // check if user is blocked
@@ -147,7 +147,7 @@ export class AuthService {
   async sendMailForgotPassword(dto: AuthForgotPasswordDto) {
     const email = dto.email
     const user = await this.usersService.findOne({
-      email,
+      where: { email },
     })
 
     // Check if user is blocked, don't send email
@@ -182,7 +182,7 @@ export class AuthService {
         HttpUnprocessableEntity('Token không hợp lệ hoặc đã hết hạn.')
 
       const user = await this.usersService.findOne({
-        email,
+        where: { email },
       })
 
       const password = await this.encryptPassword(newPassword)
@@ -206,7 +206,7 @@ export class AuthService {
 
   async updateInformation(id: number, dto: AuthAdminUpdateDto | AuthUserUpdateDto) {
     await this.usersService.update(id, dto)
-    const user = await this.usersService.findOne({ id })
+    const user = await this.usersService.findOne({ where: { id } })
     return { user }
   }
 
@@ -219,7 +219,7 @@ export class AuthService {
         throw new UnauthorizedException('Lỗi refresh token')
 
       const user = await this.usersService.findOne({
-        id: payload.id,
+        where: { id: payload.id },
       })
 
       // Check if user exists or being removed

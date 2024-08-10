@@ -42,7 +42,7 @@ export class AdminGroupController {
 
   @Delete(':id')
   @ApiOperation({ summary: 'Admin - Soft delete a group' })
-  delete(@Param('id') id: number): Promise<void> {
+  delete(@Param('id') id: number) {
     return this.groupService.softDelete(id)
   }
 

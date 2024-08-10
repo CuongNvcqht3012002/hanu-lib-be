@@ -7,7 +7,6 @@ import { CreateOrderDto } from 'src/modules/orders/dto/create-order.dto'
 import { UpdateOrderDto } from 'src/modules/orders/dto/update-order.dto'
 import { ORDER_STATUS_ENUM } from '@/modules/orders/enums/order_status'
 import { HttpBadRequest, HttpNotFound } from 'src/utils/throw-exception'
-import { OrderQueryDto } from '@/modules/orders/dto/query-dto.dto'
 import { User } from '@/modules/users/entities/user.entity'
 import { ROLE_ENUM } from '@/modules/roles/roles.enum'
 
@@ -103,7 +102,7 @@ export class OrdersService extends CoreService<Order> {
   }
 
   async updateOrderByAdmin(id: number, updateOrderDto: UpdateOrderDto, user: User) {
-    const order = await this.findOne({ id })
+    const order = await this.findOne({ where: { id } })
     if (order.userId === user.id || user.role !== ROLE_ENUM.SUB_ADMIN)
       return this.update(id, updateOrderDto)
   }
