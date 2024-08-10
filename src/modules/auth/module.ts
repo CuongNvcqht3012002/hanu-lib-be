@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common'
-import { AuthController } from '@/modules/auth/auth.controller'
-import { AuthService } from '@/modules/auth/auth.service'
+import { AuthController } from '@/modules/auth/controller'
+import { AuthService } from '@/modules/auth/service'
 import { PassportModule } from '@nestjs/passport'
 import { JwtModule } from '@nestjs/jwt'
 import { JwtStrategy } from '@/modules/auth/strategies/jwt.strategy'
@@ -9,7 +9,7 @@ import { UsersModule } from '@/modules/users/users.module'
 import { MailModule } from '@/modules/mail/mail.module'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { User } from 'src/modules/users/entities/user.entity'
-import { AdminAuthController } from '@/modules/auth/admin.auth.controller'
+import { AdminAuthController } from '@/modules/auth/admin.controller'
 
 @Module({
   imports: [

@@ -8,7 +8,7 @@ import {
   UseGuards,
   Patch,
 } from '@nestjs/common'
-import { AuthService } from '@/modules/auth/auth.service'
+import { AuthService } from '@/modules/auth/service'
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger'
 import { AuthResetPasswordDto } from '@/modules/auth/dto/auth-reset-password.dto'
 import { AuthEmailRegisterDto } from '@/modules/auth/dto/auth-email-register.dto'

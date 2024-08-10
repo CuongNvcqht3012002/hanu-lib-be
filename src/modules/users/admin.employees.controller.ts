@@ -1,5 +1,4 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common'
-import { UsersService } from '@/modules/users/users.service'
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { Roles } from '@/modules/roles/roles.decorator'
 import { ROLE_ENUM } from '@/modules/roles/roles.enum'
@@ -11,6 +10,7 @@ import { RightsGuard } from '@/modules/permission/guard/rights.guard'
 import { RIGHT_ENUM } from '@/modules/permission/enums/right.enum'
 import { Rights } from '@/modules/permission/guard/rights.decorator'
 import { AdminUpdateEmployeeDto } from '@/modules/users/dto/admin-update-employee.dto'
+import { UsersService } from '@/modules/users/service'
 
 @ApiBearerAuth()
 @Roles(ROLE_ENUM.SUB_ADMIN)

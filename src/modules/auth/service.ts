@@ -12,7 +12,7 @@ import { HttpNotFound, HttpUnprocessableEntity } from 'src/utils/throw-exception
 import { ROLE_ENUM } from 'src/modules/roles/roles.enum'
 import { IAuthResponse } from 'src/modules/auth/interfaces/auth-response.interface'
 import { AuthStudentIdLoginDto } from 'src/modules/auth/dto/auth-student-id-login.dto'
-import { AuthRefreshToken } from 'src/modules/auth/dto/auth-refresh-token.dto'
+import { AuthRefreshTokenDto } from 'src/modules/auth/dto/auth-refresh-token.dto'
 import { AuthUsernameLoginDto } from '@/modules/auth/dto/auth-username-login.dto'
 import { AuthForgotPasswordDto } from '@/modules/auth/dto/auth-forgot-password.dto'
 import { AuthAdminUpdateDto } from '@/modules/auth/dto/auth-admin-update.dto'
@@ -210,7 +210,7 @@ export class AuthService {
     return { user }
   }
 
-  async refreshToken(refreshToken: AuthRefreshToken) {
+  async refreshToken(refreshToken: AuthRefreshTokenDto) {
     try {
       const payload = this.jwtService.verify(refreshToken.refreshToken)
 

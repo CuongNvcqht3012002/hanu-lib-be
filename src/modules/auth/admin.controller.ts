@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Patch, Post, SerializeOptions, UseGuards } from '@nestjs/common'
-import { AuthService } from '@/modules/auth/auth.service'
+import { AuthService } from '@/modules/auth/service'
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger'
 import { AuthResetPasswordDto } from 'src/modules/auth/dto/auth-reset-password.dto'
 import { AuthForgotPasswordDto } from 'src/modules/auth/dto/auth-forgot-password.dto'
@@ -9,7 +9,7 @@ import { AuthGuard } from '@nestjs/passport'
 import { RolesGuard } from 'src/modules/roles/roles.guard'
 import { User } from 'src/modules/users/entities/user.entity'
 import { CurrentUser } from 'src/decorators/current-user.decorator'
-import { AuthRefreshToken } from 'src/modules/auth/dto/auth-refresh-token.dto'
+import { AuthRefreshTokenDto } from 'src/modules/auth/dto/auth-refresh-token.dto'
 import { AuthUsernameLoginDto } from '@/modules/auth/dto/auth-username-login.dto'
 import { AuthAdminUpdateDto } from '@/modules/auth/dto/auth-admin-update.dto'
 
@@ -65,7 +65,7 @@ export class AdminAuthController {
 
   @ApiOperation({ summary: 'Admin - Refresh token' })
   @Post('refresh-token')
-  public refreshToken(@Body() refreshToken: AuthRefreshToken) {
+  public refreshToken(@Body() refreshToken: AuthRefreshTokenDto) {
     return this.service.refreshToken(refreshToken)
   }
 }
