@@ -1,7 +1,7 @@
 import { Transform } from 'class-transformer'
 import { ApiProperty } from '@nestjs/swagger'
 import { IsNotEmpty, Validate } from 'class-validator'
-import { IsNotExist } from '@/utils/validators/is-not-exists.validator'
+import { IsNotExist } from '@/utils/validations/is-not-exist.validator'
 
 export class CreateSubAdminDto {
   @ApiProperty({ example: 'test@example.com' })

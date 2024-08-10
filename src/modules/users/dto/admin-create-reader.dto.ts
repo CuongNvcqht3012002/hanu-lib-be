@@ -1,7 +1,7 @@
 import { Transform } from 'class-transformer'
 import { ApiProperty } from '@nestjs/swagger'
 import { IsNotEmpty, IsPhoneNumber, Validate } from 'class-validator'
-import { IsNotExist } from '@/utils/validators/is-not-exists.validator'
+import { IsNotExist } from '@/utils/validations/is-not-exist.validator'
 
 export class AdminCreateReaderDto {
   @ApiProperty({ example: 'test@gmail.com' })

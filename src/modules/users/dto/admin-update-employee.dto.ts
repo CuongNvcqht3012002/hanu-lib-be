@@ -1,7 +1,6 @@
 // import { ApiProperty } from '@nestjs/swagger'
 // import { IsNotEmpty, IsOptional, IsPhoneNumber, MinLength, Validate } from 'class-validator'
 // import { Transform } from 'class-transformer'
-// import { IsNotExist } from 'src/utils/validators/is-not-exists.validator'
 import { CreateSubAdminDto } from '@/modules/users/dto/create-sub-admin.dto'
 import { PartialType } from '@nestjs/mapped-types'
 

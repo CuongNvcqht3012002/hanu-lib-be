@@ -24,7 +24,9 @@ export class AdminEmployeesController {
   @Rights(RIGHT_ENUM.VIEW_EMPLOYEES)
   @Get()
   findList(@Query() query: CoreQueryDto) {
-    return this.employeesService.findManyWithPagination(query, false, { role: ROLE_ENUM.SUB_ADMIN })
+    return this.employeesService.findManyWithPagination(query, {
+      where: { role: ROLE_ENUM.SUB_ADMIN },
+    })
   }
 
   @ApiOperation({ summary: 'Admin - Create sub-admin - employee' })
@@ -38,7 +40,7 @@ export class AdminEmployeesController {
   @Get(':id')
   @Rights(RIGHT_ENUM.VIEW_EMPLOYEES)
   findOne(@Param('id') id: number) {
-    return this.employeesService.findOne({ id, role: ROLE_ENUM.SUB_ADMIN })
+    return this.employeesService.findOne({ where: { id, role: ROLE_ENUM.SUB_ADMIN } })
   }
 
   @ApiOperation({ summary: 'Admin - Update Employee' })
