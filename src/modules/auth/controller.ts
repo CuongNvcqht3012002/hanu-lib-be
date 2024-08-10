@@ -21,8 +21,8 @@ import { RolesGuard } from '@/modules/roles/roles.guard'
 import { CurrentUser } from '@/decorators/current-user.decorator'
 import { User } from '@/modules/users/entities/user.entity'
 import { AuthUserUpdateDto } from '@/modules/auth/dto/auth-user-update.dto'
-import { AuthRefreshToken } from '@/modules/auth/dto/auth-refresh-token.dto'
 import { AuthUpdatePassword } from '@/modules/auth/dto/auth-update-password.dto'
+import { AuthRefreshTokenDto } from '@/modules/auth/dto/auth-refresh-token.dto'
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -94,7 +94,7 @@ export class AuthController {
 
   @ApiOperation({ summary: 'Admin - Refresh token' })
   @Post('refresh-token')
-  public refreshToken(@Body() refreshToken: AuthRefreshToken) {
+  public refreshToken(@Body() refreshToken: AuthRefreshTokenDto) {
     return this.service.refreshToken(refreshToken)
   }
 }

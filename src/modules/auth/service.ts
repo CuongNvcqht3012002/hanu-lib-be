@@ -4,7 +4,6 @@ import { JwtService } from '@nestjs/jwt'
 import { User } from '@/modules/users/entities/user.entity'
 import * as bcrypt from 'bcryptjs'
 import { AuthEmailRegisterDto } from 'src/modules/auth/dto/auth-email-register.dto'
-import { UsersService } from '@/modules/users/users.service'
 import { MailService } from '@/modules/mail/mail.service'
 import { AuthResetPasswordDto } from '@/modules/auth/dto/auth-reset-password.dto'
 import { ConfigService } from '@nestjs/config'
@@ -18,6 +17,7 @@ import { AuthForgotPasswordDto } from '@/modules/auth/dto/auth-forgot-password.d
 import { AuthAdminUpdateDto } from '@/modules/auth/dto/auth-admin-update.dto'
 import { AuthUserUpdateDto } from '@/modules/auth/dto/auth-user-update.dto'
 import { AuthUpdatePassword } from '@/modules/auth/dto/auth-update-password.dto'
+import { UsersService } from '@/modules/users/service'
 
 @Injectable()
 export class AuthService {

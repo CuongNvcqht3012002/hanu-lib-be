@@ -2,7 +2,6 @@ import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { NestFactory, Reflector } from '@nestjs/core'
 import { useContainer } from 'class-validator'
-import { AppModule } from '@/modules/app/app.module'
 import validationOptions from '@/utils/validation-options'
 
 import setupSwagger from 'src/setupSwagger'
@@ -11,6 +10,7 @@ import helmet from 'helmet'
 import { ResponseInterceptor } from 'src/interceptors/response.interceptor'
 // import { TimeoutInterceptor } from 'src/interceptors/timeout.interceptor'
 import { BaseExceptionFilter } from '@/exceptions/exception.filter'
+import { AppModule } from '@/modules/app/module'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)

@@ -5,11 +5,11 @@ import { PassportModule } from '@nestjs/passport'
 import { JwtModule } from '@nestjs/jwt'
 import { JwtStrategy } from '@/modules/auth/strategies/jwt.strategy'
 import { ConfigModule, ConfigService } from '@nestjs/config'
-import { UsersModule } from '@/modules/users/users.module'
 import { MailModule } from '@/modules/mail/mail.module'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { User } from 'src/modules/users/entities/user.entity'
 import { AdminAuthController } from '@/modules/auth/admin.controller'
+import { UsersModule } from '@/modules/users/module'
 
 @Module({
   imports: [

@@ -18,7 +18,6 @@ import { MailerModule } from '@nestjs-modules/mailer'
 import { AppController } from '@/modules/app/controller'
 import { AppService } from '@/modules/app/service'
 import { AuthModule } from '@/modules/auth/module'
-import { UsersModule } from '@/modules/users/users.module'
 import { UploadModule } from '@/modules/upload/upload.module'
 import { MailConfigService } from '@/modules/mail/mail-config.service'
 import { GroupModule } from '@/modules/permission/group.module'
@@ -26,6 +25,7 @@ import { RoomsModule } from '@/modules/rooms/module'
 import { OrdersModule } from '@/modules/orders/module'
 import { IsNotExistConstraint } from '@/utils/validations/is-not-exist.validator'
 import { IsExistConstraint } from '@/utils/validations/is-exist.validator'
+import { UsersModule } from '@/modules/users/module'
 
 @Module({
   imports: [
