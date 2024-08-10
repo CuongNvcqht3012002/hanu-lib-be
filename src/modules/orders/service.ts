@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Between, In, Repository } from 'typeorm'
-import { Order } from 'modules/orders/entities/order.entity'
+import { Order } from '@/modules/orders/entities/order.entity'
 import { CoreService } from 'src/utils/core/core-service'
 import { CreateOrderDto } from 'src/modules/orders/dto/create-order.dto'
 import { UpdateOrderDto } from 'src/modules/orders/dto/update-order.dto'

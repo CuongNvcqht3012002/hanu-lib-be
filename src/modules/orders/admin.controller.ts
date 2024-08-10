@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Patch, Query, UseGuards } from '@nestjs/common'
-import { OrdersService } from 'modules/orders/service'
+import { OrdersService } from '@/modules/orders/service'
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { UpdateOrderDto } from 'src/modules/orders/dto/update-order.dto'
 import { ROLE_ENUM } from 'src/modules/roles/roles.enum'

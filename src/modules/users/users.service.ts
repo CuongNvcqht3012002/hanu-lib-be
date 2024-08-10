@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
-import { User } from 'modules/users/entities/user.entity'
+import { User } from '@/modules/users/entities/user.entity'
 import { CoreService } from 'src/utils/core/core-service'
 import { HttpBadRequest } from 'src/utils/throw-exception'
 import { ROLE_ENUM } from 'src/modules/roles/roles.enum'

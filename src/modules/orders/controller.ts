@@ -10,7 +10,7 @@ import {
   SerializeOptions,
   UseGuards,
 } from '@nestjs/common'
-import { OrdersService } from 'modules/orders/service'
+import { OrdersService } from '@/modules/orders/service'
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { ROLE_ENUM } from 'src/modules/roles/roles.enum'
 import { Roles } from 'src/modules/roles/roles.decorator'

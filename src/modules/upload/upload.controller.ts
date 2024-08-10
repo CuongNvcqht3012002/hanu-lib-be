@@ -11,10 +11,10 @@ import {
 import { Express } from 'express'
 import { v2 } from 'cloudinary'
 import toStream = require('buffer-to-stream')
-import { ApiUploadFile } from 'modules/upload/upload.decorator'
-import { RolesGuard } from 'modules/roles/roles.guard'
-import { Roles } from 'modules/roles/roles.decorator'
-import { ROLE_ENUM } from 'modules/roles/roles.enum'
+import { ApiUploadFile } from '@/modules/upload/upload.decorator'
+import { RolesGuard } from '@/modules/roles/roles.guard'
+import { Roles } from '@/modules/roles/roles.decorator'
+import { ROLE_ENUM } from '@/modules/roles/roles.enum'
 
 // You call post api: /upload/file and property is file
 @ApiBearerAuth()

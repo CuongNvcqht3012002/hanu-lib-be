@@ -8,10 +8,10 @@ import {
   UseGuards,
   Patch,
 } from '@nestjs/common'
-import { AuthService } from 'modules/auth/auth.service'
+import { AuthService } from '@/modules/auth/auth.service'
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger'
-import { AuthResetPasswordDto } from 'modules/auth/dto/auth-reset-password.dto'
-import { AuthEmailRegisterDto } from 'modules/auth/dto/auth-email-register.dto'
+import { AuthResetPasswordDto } from '@/modules/auth/dto/auth-reset-password.dto'
+import { AuthEmailRegisterDto } from '@/modules/auth/dto/auth-email-register.dto'
 import { AuthForgotPasswordDto } from 'src/modules/auth/dto/auth-forgot-password.dto'
 import { AuthStudentIdLoginDto } from 'src/modules/auth/dto/auth-student-id-login.dto'
 import { ROLE_ENUM } from '@/modules/roles/roles.enum'

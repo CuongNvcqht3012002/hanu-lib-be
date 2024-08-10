@@ -1,5 +1,5 @@
 import { Controller, Get, Query, UseGuards } from '@nestjs/common'
-import { RoomsService } from 'modules/rooms/service'
+import { RoomsService } from '@/modules/rooms/service'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { ROLE_ENUM } from 'src/modules/roles/roles.enum'
 import { Roles } from 'src/modules/roles/roles.decorator'

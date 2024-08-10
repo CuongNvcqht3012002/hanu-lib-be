@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Between, In, Repository } from 'typeorm'
-import { Room } from 'modules/rooms/entities/room.entity'
+import { Room } from '@/modules/rooms/entities/room.entity'
 import { CoreService } from 'src/utils/core/core-service'
 import { Order } from 'src/modules/orders/entities/order.entity'
 import { SHIFT_TIME_ENUM } from '@/modules/orders/enums/shift_time'

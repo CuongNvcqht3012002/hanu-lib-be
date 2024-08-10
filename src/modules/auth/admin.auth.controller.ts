@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Patch, Post, SerializeOptions, UseGuards } from '@nestjs/common'
-import { AuthService } from 'modules/auth/auth.service'
+import { AuthService } from '@/modules/auth/auth.service'
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger'
 import { AuthResetPasswordDto } from 'src/modules/auth/dto/auth-reset-password.dto'
 import { AuthForgotPasswordDto } from 'src/modules/auth/dto/auth-forgot-password.dto'

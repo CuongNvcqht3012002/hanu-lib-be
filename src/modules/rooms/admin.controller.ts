@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common'
-import { RoomsService } from 'modules/rooms/service'
+import { RoomsService } from '@/modules/rooms/service'
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { CreateRoomDto } from 'src/modules/rooms/dto/create-room.dto'
 import { UpdateRoomDto } from 'src/modules/rooms/dto/update-room.dto'
