@@ -1,4 +1,3 @@
-import { ROLE_ENUM } from 'modules/roles/roles.enum'
 import {
   BeforeInsert,
   BeforeUpdate,
@@ -8,12 +7,13 @@ import {
   ManyToMany,
   OneToMany,
 } from 'typeorm'
-import { CoreEntity } from 'utils/core/core-entity'
 import { Exclude, Expose } from 'class-transformer'
 import { Group } from 'src/modules/permission/entities/group.entity'
 import { Order } from 'src/modules/orders/entities/order.entity'
+import { CoreEntity } from '@/utils/core/core-entity'
+import { ROLE_ENUM } from '@/modules/roles/roles.enum'
 
-@Entity()
+@Entity('users')
 export class User extends CoreEntity {
   @Column({ unique: true, nullable: true })
   studentId: string
@@ -23,15 +23,6 @@ export class User extends CoreEntity {
 
   @Column({ unique: true, nullable: true })
   username: string
-
-  rights: string[]
-
-  @BeforeInsert()
-  @BeforeUpdate()
-  setUsername() {
-    if (this.username) return
-    this.username = this.email.split('@')[0]
-  }
 
   @Column({ unique: true, nullable: true })
   phoneNumber: string
@@ -50,16 +41,32 @@ export class User extends CoreEntity {
   countFailedLoginAttempts: number
 
   @Column({ type: 'enum', enum: ROLE_ENUM, default: ROLE_ENUM.USER })
-  // @Expose({ groups: [ROLE_ENUM.ADMIN, ROLE_ENUM.SUB_ADMIN] })
+  @Expose({ groups: [ROLE_ENUM.ADMIN, ROLE_ENUM.SUB_ADMIN] })
   role: ROLE_ENUM
 
   @Column({ nullable: true })
   expiredAt: Date
 
+  @Column({ nullable: true })
+  lastLoginAt: Date
+
   @ManyToMany(() => Group)
-  @JoinTable()
+  @JoinTable({
+    name: 'user_groups',
+    joinColumn: { name: 'user_id', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'group_id', referencedColumnName: 'id' },
+  })
   groups: Group[]
 
   @OneToMany(() => Order, (order) => order.user)
   orders: Order[]
+
+  rights: string[]
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  setUsername() {
+    if (this.username) return
+    this.username = this.email.split('@')[0]
+  }
 }

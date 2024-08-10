@@ -1,13 +1,13 @@
-import { TOKEN_TYPE_ENUM } from 'modules/auth/enums/tokens.enum'
 import { ExtractJwt, Strategy } from 'passport-jwt'
 import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { PassportStrategy } from '@nestjs/passport'
-import { User } from 'modules/users/entities/user.entity'
 import { ConfigService } from '@nestjs/config'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { HttpBadRequest } from '@/utils/throw-exception'
+import { User } from '@/modules/users/entities/user.entity'
+import { TOKEN_TYPE_ENUM } from '@/modules/auth/enums/tokens.enum'
 
 type JwtPayload = Pick<User, 'id' | 'role'> & { iat: number; exp: number; type: TOKEN_TYPE_ENUM }
 

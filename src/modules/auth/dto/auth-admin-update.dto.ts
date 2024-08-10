@@ -1,38 +1,42 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsNotEmpty, IsOptional, IsPhoneNumber, Validate } from 'class-validator'
+import { IsEmail, IsNotEmpty, IsOptional, IsPhoneNumber, IsString, Validate } from 'class-validator'
 import { Transform } from 'class-transformer'
 import { IsNotExist } from '@/utils/validations/is-not-exist.validator'
 
 export class AuthAdminUpdateDto {
-  @ApiProperty({ example: 'test@example.com' })
-  @Transform(({ value }) => value?.trim())
+  @ApiProperty({ example: 'test@example.com', required: false })
+  @IsOptional()
+  @IsEmail({}, { message: 'Email không hợp lệ' })
+  @IsNotEmpty({ message: 'Email không được để trống' })
   @Validate(IsNotExist, ['User'], {
     message: 'Email đã tồn tại',
   })
-  @IsNotEmpty({ message: 'Email không được để trống' })
-  @IsOptional()
+  @Transform(({ value }) => value?.toLowerCase().trim())
   email?: string
 
-  @ApiProperty({ example: 'newUsername' })
-  @Transform(({ value }) => value?.trim())
+  @ApiProperty({ example: 'newUsername', required: false })
+  @IsOptional()
+  @IsString({ message: 'Username phải là chuỗi' })
+  @IsNotEmpty({ message: 'Username không được để trống' })
   @Validate(IsNotExist, ['User'], {
     message: 'Username đã tồn tại',
   })
-  @IsNotEmpty({ message: 'Username không được để trống' })
-  @IsOptional()
+  @Transform(({ value }) => value?.trim())
   username?: string
 
-  @ApiProperty({ example: '+1234567890' })
-  @Transform(({ value }) => value?.trim())
+  @ApiProperty({ example: '+84123456789', required: false })
+  @IsOptional()
+  @IsPhoneNumber('VN', { message: 'Số điện thoại không hợp lệ' })
   @Validate(IsNotExist, ['User'], {
     message: 'Số điện thoại đã tồn tại',
   })
-  @IsPhoneNumber('VN', { message: 'Số điện thoại không hợp lệ' })
-  @IsOptional()
+  @Transform(({ value }) => value?.trim())
   phoneNumber?: string
 
-  @ApiProperty({ example: 'John Doe' })
-  @IsNotEmpty({ message: 'Họ và tên không được để trống' })
+  @ApiProperty({ example: 'Nguyễn Văn A', required: false })
   @IsOptional()
+  @IsString({ message: 'Họ và tên phải là chuỗi' })
+  @IsNotEmpty({ message: 'Họ và tên không được để trống' })
+  @Transform(({ value }) => value?.trim())
   fullName?: string
 }

@@ -5,16 +5,34 @@ interface IData<T> {
   count: number
 }
 
-export const infinityPagination = <T>(data: IData<T>, options: IPaginationOptions) => {
-  const totalPages = Math.ceil(data.count / options.limit)
-  const hasNextPage = options.page < totalPages
+export interface IPaginationResult<T> {
+  data: T[]
+  meta: {
+    currentPage: number
+    itemsPerPage: number
+    totalItems: number
+    totalPages: number
+    hasNextPage: boolean
+    hasPreviousPage: boolean
+  }
+}
+
+export function infinityPagination<T>(
+  { data, count }: IData<T>,
+  { page, limit }: IPaginationOptions
+): IPaginationResult<T> {
+  const totalPages = Math.max(1, Math.ceil(count / limit))
+  const currentPage = Math.min(Math.max(1, page), totalPages)
 
   return {
-    data: data.data,
-    currentPage: options.page,
-    limit: options.limit,
-    totalItems: data.count,
-    totalPages,
-    hasNextPage,
+    data,
+    meta: {
+      currentPage,
+      itemsPerPage: limit,
+      totalItems: count,
+      totalPages,
+      hasNextPage: currentPage < totalPages,
+      hasPreviousPage: currentPage > 1,
+    },
   }
 }

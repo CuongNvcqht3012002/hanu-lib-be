@@ -2,16 +2,43 @@ import {
   NotFoundException,
   BadRequestException,
   UnprocessableEntityException,
+  ForbiddenException,
+  UnauthorizedException,
 } from '@nestjs/common'
 
-export const HttpNotFound = (message = '') => {
-  throw new NotFoundException(message || 'Không tìm thấy dữ liệu.')
+const ErrorMessages = {
+  NOT_FOUND: 'Không tìm thấy dữ liệu.',
+  BAD_REQUEST: 'Yêu cầu không hợp lệ.',
+  UNPROCESSABLE_ENTITY: 'Không thể xử lý yêu cầu.',
+  FORBIDDEN: 'Bạn không có quyền truy cập.',
+  UNAUTHORIZED: 'Xác thực không thành công.',
 }
 
-export const HttpUnprocessableEntity = (message = '') => {
-  throw new UnprocessableEntityException(message)
+function HttpNotFound(message = '') {
+  throw new NotFoundException(message || ErrorMessages.NOT_FOUND)
 }
 
-export const HttpBadRequest = (message = '') => {
-  throw new BadRequestException(message)
+function HttpBadRequest(message = '') {
+  throw new BadRequestException(message || ErrorMessages.BAD_REQUEST)
+}
+
+function HttpUnprocessableEntity(message = '') {
+  throw new UnprocessableEntityException(message || ErrorMessages.UNPROCESSABLE_ENTITY)
+}
+
+function HttpForbidden(message = '') {
+  throw new ForbiddenException(message || ErrorMessages.FORBIDDEN)
+}
+
+function HttpUnauthorized(message = '') {
+  throw new UnauthorizedException(message || ErrorMessages.UNAUTHORIZED)
+}
+
+export {
+  HttpNotFound,
+  HttpBadRequest,
+  HttpUnprocessableEntity,
+  HttpForbidden,
+  HttpUnauthorized,
+  ErrorMessages,
 }

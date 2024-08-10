@@ -1,14 +1,15 @@
+import { IsExist } from '@/utils/validations/is-exist.validator'
 import { ApiProperty } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
-import { IsNotEmpty, Validate } from 'class-validator'
-import { IsExist } from 'src/utils/validators/is-exists.validator'
+import { IsEmail, IsNotEmpty, Validate } from 'class-validator'
 
 export class AuthForgotPasswordDto {
   @ApiProperty({ example: 'test@gmail.com' })
-  @Transform(({ value }) => value?.trim())
+  @IsEmail({}, { message: 'Email không hợp lệ' })
+  @IsNotEmpty({ message: 'Email không được để trống' })
   @Validate(IsExist, ['User'], {
-    message: 'Email không tồn tại.',
+    message: 'Email không tồn tại',
   })
-  @IsNotEmpty({ message: 'Email không được để trống.' })
+  @Transform(({ value }) => value?.toLowerCase().trim())
   email: string
 }

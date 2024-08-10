@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { IsNotEmpty, MinLength, Validate } from 'class-validator'
-import { IsExist } from 'src/utils/validators/is-exists.validator'
 import { Transform } from 'class-transformer'
+import { IsExist } from '@/utils/validations/is-exist.validator'
 
 export class AuthStudentIdLoginDto {
   @ApiProperty()
