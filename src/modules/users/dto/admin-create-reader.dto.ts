@@ -37,9 +37,4 @@ export class AdminCreateReaderDto {
   @IsNotEmpty({ message: 'Số điện thoại không được để trống' })
   @IsNotEmpty()
   expiredAt: Date
-
-  // isLocked: boolean
-  // @ApiProperty()
-  // @IsNotEmpty()
-  // isLocked: boolean
 }

@@ -23,8 +23,6 @@ import { MailConfigService } from '@/modules/mail/mail-config.service'
 import { GroupModule } from '@/modules/permission/group.module'
 import { RoomsModule } from '@/modules/rooms/module'
 import { OrdersModule } from '@/modules/orders/module'
-import { IsNotExistConstraint } from '@/utils/validations/is-not-exist.validator'
-import { IsExistConstraint } from '@/utils/validations/is-exist.validator'
 import { UsersModule } from '@/modules/users/module'
 
 @Module({
@@ -78,8 +76,6 @@ import { UsersModule } from '@/modules/users/module'
       provide: APP_GUARD,
       useClass: ThrottlerGuard,
     },
-    IsNotExistConstraint,
-    IsExistConstraint,
   ],
   controllers: [AppController],
 })

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common'
 import { RoomsService } from '@/modules/rooms/service'
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { CreateRoomDto } from 'src/modules/rooms/dto/create-room.dto'
@@ -10,6 +10,7 @@ import { RolesGuard } from 'src/modules/roles/roles.guard'
 import { RightsGuard } from '@/modules/permission/guard/rights.guard'
 import { Rights } from '@/modules/permission/guard/rights.decorator'
 import { RIGHT_ENUM } from '@/modules/permission/enums/right.enum'
+import { CoreQueryDto } from '@/utils/core/core-query.dto'
 
 @ApiBearerAuth()
 @Roles(ROLE_ENUM.SUB_ADMIN)
@@ -29,8 +30,8 @@ export class AdminRoomsController {
   @ApiOperation({ summary: 'Admin - Get all rooms' })
   @Get()
   @Rights(RIGHT_ENUM.VIEW_ROOMS)
-  findAll() {
-    return this.roomsService.findAll()
+  findList(@Query() query: CoreQueryDto) {
+    return this.roomsService.findManyWithPagination(query)
   }
 
   @ApiOperation({ summary: 'Admin -  Get detail room' })

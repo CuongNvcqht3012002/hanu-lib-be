@@ -5,7 +5,7 @@ import { User } from '@/modules/users/entities/user.entity'
 import { CoreService } from 'src/utils/core/core-service'
 import { HttpBadRequest } from 'src/utils/throw-exception'
 import { ROLE_ENUM } from 'src/modules/roles/roles.enum'
-import { CreateSubAdminDto } from 'src/modules/users/dto/create-sub-admin.dto'
+import { AdminCreateEmployeeDto } from '@/modules/users/dto/admin-create-employee'
 import * as bcrypt from 'bcryptjs'
 import { AdminCreateReaderDto } from '@/modules/users/dto/admin-create-reader.dto'
 
@@ -31,6 +31,9 @@ export class UsersService extends CoreService<User> {
       )
   }
 
+  // if email is abc@gmail.com
+  // username = abc
+  // password = abc
   async createUsernameAndPasswordFromEmail(email: string) {
     const username = email.split('@')[0]
     const password = await this.encryptPassword(username)
@@ -39,7 +42,7 @@ export class UsersService extends CoreService<User> {
   }
 
   // EMPLOYEES
-  async createSubAdmin(dto: CreateSubAdminDto) {
+  async createSubAdmin(dto: AdminCreateEmployeeDto) {
     const usernameAndPassword = await this.createUsernameAndPasswordFromEmail(dto.email)
 
     return this.create({

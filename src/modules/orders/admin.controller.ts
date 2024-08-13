@@ -11,7 +11,7 @@ import { CurrentUser } from '@/decorators/current-user.decorator'
 import { User } from '@/modules/users/entities/user.entity'
 
 @ApiBearerAuth()
-@Roles(ROLE_ENUM.SUB_ADMIN, ROLE_ENUM.USER)
+@Roles(ROLE_ENUM.SUB_ADMIN)
 @UseGuards(AuthGuard('jwt'), RolesGuard)
 @ApiTags('Orders')
 @Controller('admin/orders')
@@ -38,11 +38,7 @@ export class AdminOrdersController {
 
   @ApiOperation({ summary: 'Admin - Update Order' })
   @Patch(':id')
-  updateOne(
-    @Param('id') id: number,
-    @Body() updateOrderDto: UpdateOrderDto,
-    @CurrentUser() user: User
-  ) {
-    return this.ordersService.updateOrderByAdmin(id, updateOrderDto, user)
+  updateOne(@Param('id') id: number, @Body() updateOrderDto: UpdateOrderDto) {
+    return this.ordersService.updateOrderByAdmin(id, updateOrderDto)
   }
 }

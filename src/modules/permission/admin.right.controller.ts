@@ -28,6 +28,6 @@ export class AdminRightController {
   @Get('seed')
   @ApiOperation({ summary: 'Admin - Seed rights data' })
   async seedRights(): Promise<void> {
-    await this.rightService.seedRights()
+    return await this.rightService.seedRights()
   }
 }

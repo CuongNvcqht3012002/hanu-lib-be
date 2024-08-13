@@ -97,7 +97,7 @@ export class RightService {
     })
 
     if (!user) {
-      HttpNotFound()
+      HttpNotFound('Hệ thống không tìm thấy người dùng admin này')
     }
 
     // Check if the user is already in the group

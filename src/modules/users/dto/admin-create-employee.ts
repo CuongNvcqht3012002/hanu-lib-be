@@ -3,7 +3,7 @@ import { ApiProperty } from '@nestjs/swagger'
 import { IsNotEmpty, Validate } from 'class-validator'
 import { IsNotExist } from '@/utils/validations/is-not-exist.validator'
 
-export class CreateSubAdminDto {
+export class AdminCreateEmployeeDto {
   @ApiProperty({ example: 'test@example.com' })
   @Transform(({ value }) => value?.trim())
   @Validate(IsNotExist, ['User'], {

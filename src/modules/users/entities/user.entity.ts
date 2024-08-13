@@ -13,7 +13,7 @@ import { Order } from 'src/modules/orders/entities/order.entity'
 import { CoreEntity } from '@/utils/core/core-entity'
 import { ROLE_ENUM } from '@/modules/roles/roles.enum'
 
-@Entity('users')
+@Entity()
 export class User extends CoreEntity {
   @Column({ unique: true, nullable: true })
   studentId: string
@@ -41,7 +41,7 @@ export class User extends CoreEntity {
   countFailedLoginAttempts: number
 
   @Column({ type: 'enum', enum: ROLE_ENUM, default: ROLE_ENUM.USER })
-  @Expose({ groups: [ROLE_ENUM.ADMIN, ROLE_ENUM.SUB_ADMIN] })
+  // @Expose({ groups: [ROLE_ENUM.ADMIN, ROLE_ENUM.SUB_ADMIN] })
   role: ROLE_ENUM
 
   @Column({ nullable: true })
@@ -51,11 +51,7 @@ export class User extends CoreEntity {
   lastLoginAt: Date
 
   @ManyToMany(() => Group)
-  @JoinTable({
-    name: 'user_groups',
-    joinColumn: { name: 'user_id', referencedColumnName: 'id' },
-    inverseJoinColumn: { name: 'group_id', referencedColumnName: 'id' },
-  })
+  @JoinTable()
   groups: Group[]
 
   @OneToMany(() => Order, (order) => order.user)

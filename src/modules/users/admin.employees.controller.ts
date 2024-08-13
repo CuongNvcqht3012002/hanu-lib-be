@@ -5,12 +5,12 @@ import { ROLE_ENUM } from '@/modules/roles/roles.enum'
 import { AuthGuard } from '@nestjs/passport'
 import { RolesGuard } from '@/modules/roles/roles.guard'
 import { CoreQueryDto } from 'src/utils/core/core-query.dto'
-import { CreateSubAdminDto } from 'src/modules/users/dto/create-sub-admin.dto'
 import { RightsGuard } from '@/modules/permission/guard/rights.guard'
 import { RIGHT_ENUM } from '@/modules/permission/enums/right.enum'
 import { Rights } from '@/modules/permission/guard/rights.decorator'
 import { AdminUpdateEmployeeDto } from '@/modules/users/dto/admin-update-employee.dto'
 import { UsersService } from '@/modules/users/service'
+import { AdminCreateEmployeeDto } from '@/modules/users/dto/admin-create-employee'
 
 @ApiBearerAuth()
 @Roles(ROLE_ENUM.SUB_ADMIN)
@@ -32,7 +32,7 @@ export class AdminEmployeesController {
   @ApiOperation({ summary: 'Admin - Create sub-admin - employee' })
   @Post()
   @Rights(RIGHT_ENUM.CREATE_EMPLOYEE)
-  createSubAdmin(@Body() createSubAdminDto: CreateSubAdminDto) {
+  createSubAdmin(@Body() createSubAdminDto: AdminCreateEmployeeDto) {
     return this.employeesService.createSubAdmin(createSubAdminDto)
   }
 

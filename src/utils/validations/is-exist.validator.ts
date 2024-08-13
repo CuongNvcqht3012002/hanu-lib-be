@@ -1,45 +1,28 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/ban-types */
-import {
-  ValidationArguments,
-  ValidatorConstraint,
-  ValidatorConstraintInterface,
-  registerDecorator,
-  ValidationOptions,
-} from 'class-validator'
-import { Injectable } from '@nestjs/common'
+import { ValidatorConstraint, ValidatorConstraintInterface } from 'class-validator'
 import { DataSource } from 'typeorm'
+import { InjectDataSource } from '@nestjs/typeorm'
+import { ValidationArguments } from 'class-validator/types/validation/ValidationArguments'
+import { Injectable } from '@nestjs/common'
 
-@ValidatorConstraint({ name: 'IsExist', async: true })
 @Injectable()
-export class IsExistConstraint implements ValidatorConstraintInterface {
-  constructor(private dataSource: DataSource) {}
+@ValidatorConstraint({ name: 'IsExist', async: true })
+export class IsExist implements ValidatorConstraintInterface {
+  constructor(
+    @InjectDataSource()
+    private dataSource: DataSource
+  ) {}
 
-  async validate(value: any, args: ValidationArguments) {
-    const [entityClass, property = args.property] = args.constraints
-    const entity = this.dataSource.getRepository(entityClass)
-    const existingRecord = await entity.findOne({ where: { [property]: value } })
-    return !!existingRecord
-  }
-
-  defaultMessage(args: ValidationArguments) {
-    const [entityClass] = args.constraints
-    return `${entityClass.name} with this ${args.property} does not exist`
-  }
-}
-
-export function IsExist(
-  entity: Function,
-  property?: string,
-  validationOptions?: ValidationOptions
-) {
-  return function (object: Object, propertyName: string) {
-    registerDecorator({
-      target: object.constructor,
-      propertyName,
-      options: validationOptions,
-      constraints: [entity, property],
-      validator: IsExistConstraint,
+  async validate(value: string, validationArguments: ValidationArguments) {
+    const repository = validationArguments.constraints[0]
+    const pathToProperty = validationArguments.constraints[1]
+    const entity: unknown = await this.dataSource.getRepository(repository).findOne({
+      where: {
+        [pathToProperty ? pathToProperty : validationArguments.property]: pathToProperty
+          ? value?.[pathToProperty]
+          : value,
+      },
     })
+
+    return Boolean(entity)
   }
 }

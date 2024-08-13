@@ -20,7 +20,6 @@ export class OrdersService extends CoreService<Order> {
   }
 
   async createOrder(userId: number, createOrderDto: CreateOrderDto) {
-    console.log(userId, createOrderDto)
     const { roomId, shift, usageDay } = createOrderDto
     const day = new Date(usageDay)
     const today = new Date()
@@ -84,15 +83,19 @@ export class OrdersService extends CoreService<Order> {
   }
 
   async updateOrderByUser(id: number, updateOrderDto: UpdateOrderDto, userId: number) {
-    const order = await this.ordersRepository.findOne({
+    const order = await this.findOne({
       where: {
         id,
         userId,
       },
     })
 
-    if (!order) {
-      HttpNotFound('Order not found')
+    if (order.status !== ORDER_STATUS_ENUM.PENDING) {
+      HttpBadRequest('Bạn không thể cập nhật trạng thái của đơn hàng này')
+    }
+
+    if (updateOrderDto.status !== ORDER_STATUS_ENUM.CANCELLED) {
+      HttpBadRequest('Bạn chỉ có thể hủy đặt phòng')
     }
 
     return this.ordersRepository.save({
@@ -101,9 +104,7 @@ export class OrdersService extends CoreService<Order> {
     })
   }
 
-  async updateOrderByAdmin(id: number, updateOrderDto: UpdateOrderDto, user: User) {
-    const order = await this.findOne({ where: { id } })
-    if (order.userId === user.id || user.role !== ROLE_ENUM.SUB_ADMIN)
-      return this.update(id, updateOrderDto)
+  updateOrderByAdmin(id: number, updateOrderDto: UpdateOrderDto) {
+    return this.update(id, updateOrderDto)
   }
 }
