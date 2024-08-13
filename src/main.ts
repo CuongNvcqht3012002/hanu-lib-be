@@ -11,6 +11,8 @@ import { ResponseInterceptor } from 'src/interceptors/response.interceptor'
 // import { TimeoutInterceptor } from 'src/interceptors/timeout.interceptor'
 import { BaseExceptionFilter } from '@/exceptions/exception.filter'
 import { AppModule } from '@/modules/app/module'
+import { ContextInterceptor } from '@/interceptors/context.interceptor'
+import { RemoveContextPipe } from '@/utils/remove-context-validation'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
@@ -37,7 +39,8 @@ async function bootstrap() {
   app.enableCors()
 
   // Validation
-  app.useGlobalPipes(new ValidationPipe(validationOptions))
+  // we have to remove context from the dto after checking the validation
+  app.useGlobalPipes(new ValidationPipe(validationOptions), new RemoveContextPipe())
 
   // Exception => Define the common error response
   app.useGlobalFilters(new BaseExceptionFilter())
@@ -47,6 +50,9 @@ async function bootstrap() {
 
   // Interceptor => Define the common success response
   app.useGlobalInterceptors(new ResponseInterceptor())
+
+  // Interceptor => So that at DTO we can accept the request context
+  app.useGlobalInterceptors(new ContextInterceptor())
 
   // Interceptor => Response error if request timeout
   // app.useGlobalInterceptors(new TimeoutInterceptor(configService))

@@ -2,8 +2,9 @@ import { Transform } from 'class-transformer'
 import { ApiProperty } from '@nestjs/swagger'
 import { IsNotEmpty, Validate } from 'class-validator'
 import { IsNotExist } from '@/utils/validations/is-not-exist.validator'
+import { ContextAwareDto } from '@/utils/validations/context-aware.dto'
 
-export class AdminCreateEmployeeDto {
+export class AdminCreateEmployeeDto extends ContextAwareDto {
   @ApiProperty({ example: 'test@example.com' })
   @Transform(({ value }) => value?.trim())
   @Validate(IsNotExist, ['User'], {

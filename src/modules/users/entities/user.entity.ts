@@ -41,7 +41,7 @@ export class User extends CoreEntity {
   countFailedLoginAttempts: number
 
   @Column({ type: 'enum', enum: ROLE_ENUM, default: ROLE_ENUM.USER })
-  // @Expose({ groups: [ROLE_ENUM.ADMIN, ROLE_ENUM.SUB_ADMIN] })
+  @Expose({ groups: [ROLE_ENUM.ADMIN, ROLE_ENUM.SUB_ADMIN] })
   role: ROLE_ENUM
 
   @Column({ nullable: true })

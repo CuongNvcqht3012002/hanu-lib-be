@@ -24,6 +24,8 @@ import { GroupModule } from '@/modules/permission/group.module'
 import { RoomsModule } from '@/modules/rooms/module'
 import { OrdersModule } from '@/modules/orders/module'
 import { UsersModule } from '@/modules/users/module'
+import { IsNotExist } from '@/utils/validations/is-not-exist.validator'
+import { IsExist } from '@/utils/validations/is-exist.validator'
 
 @Module({
   imports: [
@@ -76,6 +78,8 @@ import { UsersModule } from '@/modules/users/module'
       provide: APP_GUARD,
       useClass: ThrottlerGuard,
     },
+    IsNotExist,
+    IsExist,
   ],
   controllers: [AppController],
 })

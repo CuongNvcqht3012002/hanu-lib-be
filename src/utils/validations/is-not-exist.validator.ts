@@ -22,15 +22,18 @@ export class IsNotExist implements ValidatorConstraintInterface {
     // property example: email, userId, ...
     const property = validationArguments.property
 
+    const context = validationArguments.object['context']
+
+    const idParam = context?.params.id
+
     const repository = validationArguments.constraints[0] as string
-    const currentValue = validationArguments.object as ValidationEntity
     const entity = (await this.dataSource.getRepository(repository).findOne({
       where: {
         [property]: value,
       },
     })) as ValidationEntity
 
-    if (entity?.[property] !== currentValue?.[property]) {
+    if (idParam && entity?.id === parseInt(idParam, 10)) {
       return true
     }
 
