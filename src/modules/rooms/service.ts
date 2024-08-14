@@ -18,7 +18,7 @@ export class RoomsService extends CoreService<Room> {
     super(roomsRepository)
   }
 
-  async getRoomStatus(dayInput: string) {
+  async getMatrixRoomsAndStatuses(dayInput: string) {
     const dayInputWithoutTimeZone = dayInput.split(' ')[0]
     const dayFormat = new Date(dayInputWithoutTimeZone)
     const startOfDay = new Date(

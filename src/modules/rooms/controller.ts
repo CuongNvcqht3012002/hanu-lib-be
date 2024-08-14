@@ -1,6 +1,6 @@
 import { Controller, Get, Query, UseGuards } from '@nestjs/common'
 import { RoomsService } from '@/modules/rooms/service'
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { ROLE_ENUM } from 'src/modules/roles/roles.enum'
 import { Roles } from 'src/modules/roles/roles.decorator'
 import { AuthGuard } from '@nestjs/passport'
@@ -15,11 +15,13 @@ import { SHIFT_TIME_ENUM } from '@/modules/orders/enums/shift_time'
 export class RoomsController {
   constructor(private readonly roomsService: RoomsService) {}
 
+  @ApiOperation({ summary: 'User - Get matrix rooms and statuses' })
   @Get('status')
-  getRoomStatus(@Query('day') day: string) {
-    return this.roomsService.getRoomStatus(day)
+  getMatrixRoomsAndStatuses(@Query('day') day: string) {
+    return this.roomsService.getMatrixRoomsAndStatuses(day)
   }
 
+  @ApiOperation({ summary: 'User - Get order by room id, shift and day' })
   @Get('order')
   getOrderByRoomIdAndShiftAndDay(
     @Query('roomId') roomId: number,
