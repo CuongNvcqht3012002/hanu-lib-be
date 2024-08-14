@@ -85,14 +85,15 @@ export class AuthService {
       const { type, ...dto } = payload
 
       if (type !== TOKEN_TYPE_ENUM.VERIFY_EMAIL)
-        HttpUnprocessableEntity('Token không hợp lệ hoặc đã hết hạn.')
+        HttpUnprocessableEntity('Đường dẫn không hợp lệ hoặc đã hết hạn.')
 
       // Encrypt password
       const password = await this.encryptPassword(dto.password)
       const user = await this.usersService.create({ ...dto, password })
       return { user }
     } catch (error) {
-      HttpUnprocessableEntity(error.message)
+      error.error = 'Đường dẫn không hợp lệ hoặc đã hết hạn.'
+      HttpUnprocessableEntity(error)
     }
   }
 

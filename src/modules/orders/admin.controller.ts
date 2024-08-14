@@ -7,8 +7,6 @@ import { Roles } from 'src/modules/roles/roles.decorator'
 import { AuthGuard } from '@nestjs/passport'
 import { RolesGuard } from 'src/modules/roles/roles.guard'
 import { OrderQueryDto } from '@/modules/orders/dto/query-dto.dto'
-import { CurrentUser } from '@/decorators/current-user.decorator'
-import { User } from '@/modules/users/entities/user.entity'
 
 @ApiBearerAuth()
 @Roles(ROLE_ENUM.SUB_ADMIN)
@@ -19,15 +17,9 @@ export class AdminOrdersController {
   constructor(private readonly ordersService: OrdersService) {}
   @ApiOperation({ summary: 'Admin - Get list orders' })
   @Get()
-  findAll(@Query() query: OrderQueryDto) {
+  findList(@Query() query: OrderQueryDto) {
     const { page, limit, status } = query
-    return this.ordersService.findManyWithPagination(
-      { page, limit },
-      {
-        where: { status },
-        relations: ['user', 'room'],
-      }
-    )
+    return this.ordersService.findListOrdersByAdmin({ page, limit, status })
   }
 
   @ApiOperation({ summary: 'Admin -  Get Detail Order' })

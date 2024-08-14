@@ -6,9 +6,8 @@ import { CoreService } from 'src/utils/core/core-service'
 import { CreateOrderDto } from 'src/modules/orders/dto/create-order.dto'
 import { UpdateOrderDto } from 'src/modules/orders/dto/update-order.dto'
 import { ORDER_STATUS_ENUM } from '@/modules/orders/enums/order_status'
-import { HttpBadRequest, HttpNotFound } from 'src/utils/throw-exception'
-import { User } from '@/modules/users/entities/user.entity'
-import { ROLE_ENUM } from '@/modules/roles/roles.enum'
+import { HttpBadRequest } from 'src/utils/throw-exception'
+import { IPaginationOptions } from '@/utils/types/pagination-options'
 
 @Injectable()
 export class OrdersService extends CoreService<Order> {
@@ -56,13 +55,38 @@ export class OrdersService extends CoreService<Order> {
     return this.ordersRepository.save(newOrder)
   }
 
-  async findListOrdersByUser(userId: number) {
-    const data = await this.ordersRepository.find({
-      where: {
-        userId,
-      },
-    })
-    return data
+  findListOrdersByUser(
+    userId: number,
+    { page, limit, status }: IPaginationOptions & { status?: ORDER_STATUS_ENUM }
+  ) {
+    return this.findManyWithPagination(
+      { page, limit },
+      {
+        where: {
+          userId,
+          status,
+        },
+        relations: ['user', 'room'],
+      }
+    )
+  }
+
+  findListOrdersByAdmin({
+    page,
+    limit,
+    status,
+  }: {
+    page: number
+    limit: number
+    status?: ORDER_STATUS_ENUM
+  }) {
+    return this.findManyWithPagination(
+      { page, limit },
+      {
+        where: { status },
+        relations: ['user', 'room'],
+      }
+    )
   }
 
   findOneOrderByAdmin({ id }: { id: number }) {
@@ -70,6 +94,7 @@ export class OrdersService extends CoreService<Order> {
       where: {
         id,
       },
+      relations: ['user', 'room'],
     })
   }
 
@@ -79,6 +104,7 @@ export class OrdersService extends CoreService<Order> {
         id,
         userId,
       },
+      relations: ['user', 'room'],
     })
   }
 

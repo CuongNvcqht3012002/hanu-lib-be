@@ -20,6 +20,7 @@ import { CurrentUser } from 'src/decorators/current-user.decorator'
 import { User } from 'src/modules/users/entities/user.entity'
 import { UpdateOrderDto } from 'src/modules/orders/dto/update-order.dto'
 import { CreateOrderDto } from '@/modules/orders/dto/create-order.dto'
+import { OrderQueryDto } from '@/modules/orders/dto/query-dto.dto'
 
 @ApiBearerAuth()
 @Roles(ROLE_ENUM.USER, ROLE_ENUM.SUB_ADMIN)
@@ -31,8 +32,8 @@ export class OrdersController {
 
   @ApiOperation({ summary: 'User - Get list own orders' })
   @Get()
-  findAll(@CurrentUser() user: User) {
-    return this.ordersService.findListOrdersByUser(user.id)
+  findAll(@CurrentUser() user: User, @Query() query: OrderQueryDto) {
+    return this.ordersService.findListOrdersByUser(user.id, query)
   }
 
   @ApiOperation({ summary: 'User -  Get Detail Order' })
