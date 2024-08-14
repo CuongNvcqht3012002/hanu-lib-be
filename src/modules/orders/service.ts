@@ -55,7 +55,7 @@ export class OrdersService extends CoreService<Order> {
     return this.ordersRepository.save(newOrder)
   }
 
-  findListOrdersByUser(
+  userFindOrderList(
     userId: number,
     { page, limit, status }: IPaginationOptions & { status?: ORDER_STATUS_ENUM }
   ) {
@@ -71,7 +71,7 @@ export class OrdersService extends CoreService<Order> {
     )
   }
 
-  findListOrdersByAdmin({
+  adminFindOrderList({
     page,
     limit,
     status,
@@ -89,7 +89,7 @@ export class OrdersService extends CoreService<Order> {
     )
   }
 
-  findOneOrderByAdmin({ id }: { id: number }) {
+  adminFindOneOrder({ id }: { id: number }) {
     return this.ordersRepository.findOneOrFail({
       where: {
         id,
@@ -98,7 +98,7 @@ export class OrdersService extends CoreService<Order> {
     })
   }
 
-  findOneOrderByUser({ id, userId }: { id: number; userId: number }) {
+  userFindOneOrder({ id, userId }: { id: number; userId: number }) {
     return this.ordersRepository.findOneOrFail({
       where: {
         id,
@@ -108,7 +108,7 @@ export class OrdersService extends CoreService<Order> {
     })
   }
 
-  async updateOrderByUser(id: number, updateOrderDto: UpdateOrderDto, userId: number) {
+  async userUpdateOrder(id: number, updateOrderDto: UpdateOrderDto, userId: number) {
     const order = await this.findOne({
       where: {
         id,
@@ -130,7 +130,7 @@ export class OrdersService extends CoreService<Order> {
     })
   }
 
-  updateOrderByAdmin(id: number, updateOrderDto: UpdateOrderDto) {
+  adminUpdateOrder(id: number, updateOrderDto: UpdateOrderDto) {
     return this.update(id, updateOrderDto)
   }
 }

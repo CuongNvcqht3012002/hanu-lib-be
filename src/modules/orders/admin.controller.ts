@@ -19,18 +19,18 @@ export class AdminOrdersController {
   @Get()
   findList(@Query() query: OrderQueryDto) {
     const { page, limit, status } = query
-    return this.ordersService.findListOrdersByAdmin({ page, limit, status })
+    return this.ordersService.adminFindOrderList({ page, limit, status })
   }
 
   @ApiOperation({ summary: 'Admin -  Get Detail Order' })
   @Get(':id')
   findOne(@Param('id') id: number) {
-    return this.ordersService.findOneOrderByAdmin({ id })
+    return this.ordersService.adminFindOneOrder({ id })
   }
 
   @ApiOperation({ summary: 'Admin - Update Order' })
   @Patch(':id')
   updateOne(@Param('id') id: number, @Body() updateOrderDto: UpdateOrderDto) {
-    return this.ordersService.updateOrderByAdmin(id, updateOrderDto)
+    return this.ordersService.adminUpdateOrder(id, updateOrderDto)
   }
 }

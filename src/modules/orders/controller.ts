@@ -32,14 +32,14 @@ export class OrdersController {
 
   @ApiOperation({ summary: 'User - Get list own orders' })
   @Get()
-  findAll(@CurrentUser() user: User, @Query() query: OrderQueryDto) {
-    return this.ordersService.findListOrdersByUser(user.id, query)
+  findList(@CurrentUser() user: User, @Query() query: OrderQueryDto) {
+    return this.ordersService.userFindOrderList(user.id, query)
   }
 
   @ApiOperation({ summary: 'User -  Get Detail Order' })
   @Get(':id')
   findOne(@Param('id') id: number, @CurrentUser() user: User) {
-    return this.ordersService.findOneOrderByUser({ id, userId: user.id })
+    return this.ordersService.userFindOneOrder({ id, userId: user.id })
   }
 
   @ApiOperation({ summary: 'User - Update Order' })
@@ -49,7 +49,7 @@ export class OrdersController {
     @Body() updateOrderDto: UpdateOrderDto,
     @CurrentUser() user: User
   ) {
-    return this.ordersService.updateOrderByUser(id, updateOrderDto, user.id)
+    return this.ordersService.userUpdateOrder(id, updateOrderDto, user.id)
   }
 
   @ApiOperation({ summary: 'User - Create Order' })
