@@ -10,6 +10,6 @@ export class AuthForgotPasswordDto {
   @Validate(IsExist, ['User'], {
     message: 'Email không tồn tại',
   })
-  @Transform(({ value }) => value?.toLowerCase().trim())
+  @Transform(({ value }) => value?.trim())
   email: string
 }

@@ -6,8 +6,8 @@ import { CoreService } from 'src/utils/core/core-service'
 import { HttpBadRequest } from 'src/utils/throw-exception'
 import { ROLE_ENUM } from 'src/modules/roles/roles.enum'
 import { AdminCreateEmployeeDto } from '@/modules/users/dto/admin-create-employee'
-import * as bcrypt from 'bcryptjs'
 import { AdminCreateReaderDto } from '@/modules/users/dto/admin-create-reader.dto'
+import { encryptPassword } from '@/utils/libs/encrypt-password'
 
 @Injectable()
 export class UsersService extends CoreService<User> {
@@ -18,12 +18,6 @@ export class UsersService extends CoreService<User> {
     super(usersRepository)
   }
 
-  async encryptPassword(rawPassword: string) {
-    const salt = await bcrypt.genSalt()
-    const password = await bcrypt.hash(rawPassword, salt)
-    return password
-  }
-
   isLocked(user: User) {
     if (user.isLocked)
       HttpBadRequest(
@@ -31,12 +25,14 @@ export class UsersService extends CoreService<User> {
       )
   }
 
+  // this function will be used by managers
   // if email is abc@gmail.com
   // username = abc
   // password = abc
   async createUsernameAndPasswordFromEmail(email: string) {
     const username = email.split('@')[0]
-    const password = await this.encryptPassword(username)
+    // create password = username
+    const password = await encryptPassword(username)
 
     return { username, password }
   }
@@ -52,7 +48,6 @@ export class UsersService extends CoreService<User> {
     })
   }
 
-  // READERS
   async toggleLockReader(userId: number, isLocked: boolean) {
     const user = await this.findOne({ where: { id: userId } })
 

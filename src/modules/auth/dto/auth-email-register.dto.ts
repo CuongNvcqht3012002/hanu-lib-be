@@ -10,14 +10,14 @@ export class AuthEmailRegisterDto {
   @Validate(IsNotExist, ['User'], {
     message: 'Email đã tồn tại',
   })
-  @Transform(({ value }) => value?.toLowerCase().trim())
+  @Transform(({ value }) => value?.trim())
   email: string
 
   @ApiProperty({ example: 'B1234567' })
-  @IsString({ message: 'Mã sinh viên phải là chuỗi' })
-  @IsNotEmpty({ message: 'Mã sinh viên không được để trống' })
+  @IsString({ message: 'Mã sinh viên/bạn đọc phải là chuỗi' })
+  @IsNotEmpty({ message: 'Mã sinh viên/bạn đọc không được để trống' })
   @Validate(IsNotExist, ['User'], {
-    message: 'Mã sinh viên đã tồn tại',
+    message: 'Mã sinh viên/bạn đọc đã tồn tại',
   })
   @Transform(({ value }) => value?.trim())
   username: string

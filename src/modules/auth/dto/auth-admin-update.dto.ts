@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsEmail, IsNotEmpty, IsOptional, IsPhoneNumber, IsString, Validate } from 'class-validator'
+import { IsEmail, IsOptional, IsPhoneNumber, IsString, Validate } from 'class-validator'
 import { Transform } from 'class-transformer'
 import { IsNotExist } from '@/utils/validations/is-not-exist.validator'
 
@@ -10,7 +10,7 @@ export class AuthAdminUpdateDto {
   @Validate(IsNotExist, ['User'], {
     message: 'Email đã tồn tại',
   })
-  @Transform(({ value }) => value?.toLowerCase().trim())
+  @Transform(({ value }) => value?.trim())
   email?: string
 
   @ApiProperty({ example: 'newUsername', required: false })

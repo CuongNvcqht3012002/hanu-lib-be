@@ -1,3 +1,4 @@
+import { encryptPassword } from '@/utils/libs/encrypt-password'
 import { TOKEN_TYPE_ENUM } from '@/modules/auth/enums/tokens.enum'
 import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
@@ -25,12 +26,6 @@ export class AuthService {
     private mailService: MailService,
     private configService: ConfigService
   ) {}
-
-  async encryptPassword(rawPassword: string) {
-    const salt = await bcrypt.genSalt()
-    const password = await bcrypt.hash(rawPassword, salt)
-    return password
-  }
 
   createTokens(user: User) {
     const accessToken = this.jwtService.sign(
@@ -86,7 +81,7 @@ export class AuthService {
         HttpUnprocessableEntity('Đường dẫn không hợp lệ hoặc đã hết hạn.')
 
       // Encrypt password
-      const password = await this.encryptPassword(dto.password)
+      const password = await encryptPassword(dto.password)
       const user = await this.usersService.create({ ...dto, password })
       return { user }
     } catch (error) {
@@ -106,6 +101,9 @@ export class AuthService {
     if (!isValidPassword) HttpUnprocessableEntity('Mật khẩu không chính xác.')
 
     const tokens = await this.createTokens(user)
+
+    // update last login at
+    await this.usersService.update(user.id, { lastLoginAt: new Date() })
 
     return { ...tokens, user }
   }
@@ -136,6 +134,12 @@ export class AuthService {
     }
 
     const tokens = await this.createTokens(user)
+
+    // update last login at
+    await this.usersService.update(user.id, {
+      lastLoginAt: new Date(),
+      countFailedLoginAttempts: 0,
+    })
 
     return { ...tokens, user }
   }
@@ -182,7 +186,7 @@ export class AuthService {
         where: { email },
       })
 
-      const password = await this.encryptPassword(newPassword)
+      const password = await encryptPassword(newPassword)
       this.usersService.update(user.id, { password, countFailedLoginAttempts: 0 })
     } catch (error) {
       HttpUnprocessableEntity('Token không hợp lệ hoặc đã hết hạn.')
@@ -230,7 +234,7 @@ export class AuthService {
 
     if (!isValidPassword) HttpUnprocessableEntity('Mật khẩu cũ không chính xác.')
 
-    const password = await this.encryptPassword(dto.newPassword)
+    const password = await encryptPassword(dto.newPassword)
     await this.usersService.update(user.id, { password })
   }
 }

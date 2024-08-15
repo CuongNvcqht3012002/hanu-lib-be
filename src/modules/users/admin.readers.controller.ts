@@ -23,11 +23,11 @@ export class AdminReadersController {
   @ApiOperation({ summary: 'Admin - Create reader' })
   @Post()
   @Rights(RIGHT_ENUM.CREATE_READER)
-  createSubAdmin(@Body() dto: AdminCreateReaderDto) {
+  createReader(@Body() dto: AdminCreateReaderDto) {
     return this.readersService.createReader(dto)
   }
 
-  @ApiOperation({ summary: 'Admin - Get list readers' })
+  @ApiOperation({ summary: 'Admin - Get reader list' })
   @Get()
   @Rights(RIGHT_ENUM.VIEW_READERS)
   findList(@Query() query: CoreQueryDto) {
