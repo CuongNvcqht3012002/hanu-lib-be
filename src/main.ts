@@ -12,7 +12,7 @@ import { ResponseInterceptor } from 'src/interceptors/response.interceptor'
 import { BaseExceptionFilter } from '@/exceptions/exception.filter'
 import { AppModule } from '@/modules/app/module'
 import { ContextInterceptor } from '@/interceptors/context.interceptor'
-import { RemoveContextPipe } from '@/utils/remove-context-validation'
+import { RemoveContextPipe } from '@/utils/validations/remove-context-aware'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)

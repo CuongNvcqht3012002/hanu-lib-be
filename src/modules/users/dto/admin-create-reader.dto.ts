@@ -33,9 +33,4 @@ export class AdminCreateReaderDto extends ContextAwareDto {
   @ApiProperty()
   @IsNotEmpty({ message: 'Họ và tên không được để trống' })
   fullName: string
-
-  @ApiProperty({ example: '2024-12-31T23:59:59Z' })
-  @IsNotEmpty({ message: 'Số điện thoại không được để trống' })
-  @IsNotEmpty()
-  expiredAt: Date
 }

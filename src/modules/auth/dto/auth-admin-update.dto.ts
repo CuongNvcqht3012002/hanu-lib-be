@@ -7,7 +7,6 @@ export class AuthAdminUpdateDto {
   @ApiProperty({ example: 'test@example.com', required: false })
   @IsOptional()
   @IsEmail({}, { message: 'Email không hợp lệ' })
-  @IsNotEmpty({ message: 'Email không được để trống' })
   @Validate(IsNotExist, ['User'], {
     message: 'Email đã tồn tại',
   })
@@ -17,7 +16,6 @@ export class AuthAdminUpdateDto {
   @ApiProperty({ example: 'newUsername', required: false })
   @IsOptional()
   @IsString({ message: 'Username phải là chuỗi' })
-  @IsNotEmpty({ message: 'Username không được để trống' })
   @Validate(IsNotExist, ['User'], {
     message: 'Username đã tồn tại',
   })
@@ -36,7 +34,6 @@ export class AuthAdminUpdateDto {
   @ApiProperty({ example: 'Nguyễn Văn A', required: false })
   @IsOptional()
   @IsString({ message: 'Họ và tên phải là chuỗi' })
-  @IsNotEmpty({ message: 'Họ và tên không được để trống' })
   @Transform(({ value }) => value?.trim())
   fullName?: string
 }

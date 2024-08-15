@@ -25,14 +25,24 @@ export class IsNotExist implements ValidatorConstraintInterface {
     const context = validationArguments.object['context']
 
     const idParam = context?.params.id
+    const userId = context?.userId
 
     const repository = validationArguments.constraints[0] as string
     const entity = (await this.dataSource.getRepository(repository).findOne({
       where: {
         [property]: value,
       },
+      withDeleted: true,
     })) as ValidationEntity
 
+    // for auth module
+    if (userId && repository === 'User') {
+      if (entity?.id === userId) {
+        return true
+      }
+    }
+
+    // for other modules
     if (idParam && entity?.id === parseInt(idParam, 10)) {
       return true
     }

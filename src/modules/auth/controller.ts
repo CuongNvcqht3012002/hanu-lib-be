@@ -1,19 +1,9 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Post,
-  SerializeOptions,
-  Query,
-  UseGuards,
-  Patch,
-} from '@nestjs/common'
+import { Body, Controller, Get, Post, Query, UseGuards, Patch } from '@nestjs/common'
 import { AuthService } from '@/modules/auth/service'
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger'
 import { AuthResetPasswordDto } from '@/modules/auth/dto/auth-reset-password.dto'
 import { AuthEmailRegisterDto } from '@/modules/auth/dto/auth-email-register.dto'
 import { AuthForgotPasswordDto } from 'src/modules/auth/dto/auth-forgot-password.dto'
-import { AuthStudentIdLoginDto } from 'src/modules/auth/dto/auth-student-id-login.dto'
 import { ROLE_ENUM } from '@/modules/roles/roles.enum'
 import { Roles } from '@/modules/roles/roles.decorator'
 import { AuthGuard } from '@nestjs/passport'
@@ -23,6 +13,7 @@ import { User } from '@/modules/users/entities/user.entity'
 import { AuthUserUpdateDto } from '@/modules/auth/dto/auth-user-update.dto'
 import { AuthUpdatePassword } from '@/modules/auth/dto/auth-update-password.dto'
 import { AuthRefreshTokenDto } from '@/modules/auth/dto/auth-refresh-token.dto'
+import { AuthUsernameLoginDto } from '@/modules/auth/dto/auth-username-login.dto'
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -30,9 +21,6 @@ export class AuthController {
   constructor(public service: AuthService) {}
 
   @ApiOperation({ summary: 'User - Register by email' })
-  @SerializeOptions({
-    groups: ['me'],
-  })
   @Post('email/register')
   register(@Body() createUserDto: AuthEmailRegisterDto) {
     return this.service.register(createUserDto)
@@ -45,11 +33,8 @@ export class AuthController {
   }
 
   @ApiOperation({ summary: 'User - Login' })
-  @SerializeOptions({
-    groups: ['me'],
-  })
   @Post('email/login')
-  public login(@Body() loginDto: AuthStudentIdLoginDto) {
+  public login(@Body() loginDto: AuthUsernameLoginDto) {
     return this.service.validateUserLogin(loginDto)
   }
 
@@ -68,33 +53,33 @@ export class AuthController {
   @ApiOperation({ summary: 'User - Get information' })
   @ApiBearerAuth()
   @Get('me')
-  @Roles(ROLE_ENUM.USER, ROLE_ENUM.SUB_ADMIN)
+  @Roles(ROLE_ENUM.USER)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   public getMe(@CurrentUser() user: User) {
     return this.service.me(user)
   }
 
-  @ApiOperation({ summary: 'Admin - Update information' })
+  @ApiOperation({ summary: 'User - Update information' })
   @ApiBearerAuth()
   @Patch('me')
-  @Roles(ROLE_ENUM.USER, ROLE_ENUM.SUB_ADMIN)
+  @Roles(ROLE_ENUM.USER)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   public updateInformation(@CurrentUser() user: User, @Body() dto: AuthUserUpdateDto) {
     return this.service.updateInformation(user.id, dto)
   }
 
-  @ApiOperation({ summary: 'Admin - Update password' })
+  @ApiOperation({ summary: 'User - Update password' })
   @ApiBearerAuth()
   @Patch('update-password')
-  @Roles(ROLE_ENUM.USER, ROLE_ENUM.SUB_ADMIN)
+  @Roles(ROLE_ENUM.USER)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   public updatePassword(@CurrentUser() user: User, @Body() dto: AuthUpdatePassword) {
     return this.service.updatePassword(user, dto)
   }
 
-  @ApiOperation({ summary: 'Admin - Refresh token' })
+  @ApiOperation({ summary: 'User - Refresh token' })
   @Post('refresh-token')
-  public refreshToken(@Body() refreshToken: AuthRefreshTokenDto) {
-    return this.service.refreshToken(refreshToken)
+  public refreshToken(@Body() dto: AuthRefreshTokenDto) {
+    return this.service.refreshToken(dto)
   }
 }

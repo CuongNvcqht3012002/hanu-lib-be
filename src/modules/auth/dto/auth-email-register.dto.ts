@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsEmail, IsNotEmpty, IsPhoneNumber, IsString, MinLength, Validate } from 'class-validator'
+import { IsEmail, IsNotEmpty, IsString, MinLength, Validate } from 'class-validator'
 import { Transform } from 'class-transformer'
 import { IsNotExist } from '@/utils/validations/is-not-exist.validator'
 
@@ -14,26 +14,16 @@ export class AuthEmailRegisterDto {
   email: string
 
   @ApiProperty({ example: 'B1234567' })
-  @IsString({ message: 'Mã bạn đọc phải là chuỗi' })
-  @IsNotEmpty({ message: 'Mã bạn đọc không được để trống' })
+  @IsString({ message: 'Mã sinh viên phải là chuỗi' })
+  @IsNotEmpty({ message: 'Mã sinh viên không được để trống' })
   @Validate(IsNotExist, ['User'], {
-    message: 'Mã bạn đọc đã tồn tại',
+    message: 'Mã sinh viên đã tồn tại',
   })
   @Transform(({ value }) => value?.trim())
-  studentId: string
-
-  @ApiProperty({ example: '+84123456789' })
-  @IsPhoneNumber('VN', { message: 'Số điện thoại không hợp lệ' })
-  @IsNotEmpty({ message: 'Số điện thoại không được để trống' })
-  @Validate(IsNotExist, ['User'], {
-    message: 'Số điện thoại đã tồn tại',
-  })
-  @Transform(({ value }) => value?.trim())
-  phoneNumber: string
+  username: string
 
   @ApiProperty({ example: 'password123' })
   @IsString({ message: 'Mật khẩu phải là chuỗi' })
-  @IsNotEmpty({ message: 'Mật khẩu không được để trống' })
   @MinLength(6, { message: 'Mật khẩu phải có ít nhất 6 ký tự' })
   password: string
 

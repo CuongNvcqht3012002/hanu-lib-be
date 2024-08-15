@@ -7,10 +7,8 @@ import { AuthEmailRegisterDto } from 'src/modules/auth/dto/auth-email-register.d
 import { MailService } from '@/modules/mail/mail.service'
 import { AuthResetPasswordDto } from '@/modules/auth/dto/auth-reset-password.dto'
 import { ConfigService } from '@nestjs/config'
-import { HttpNotFound, HttpUnprocessableEntity } from 'src/utils/throw-exception'
-import { ROLE_ENUM } from 'src/modules/roles/roles.enum'
+import { HttpUnprocessableEntity } from 'src/utils/throw-exception'
 import { IAuthResponse } from 'src/modules/auth/interfaces/auth-response.interface'
-import { AuthStudentIdLoginDto } from 'src/modules/auth/dto/auth-student-id-login.dto'
 import { AuthRefreshTokenDto } from 'src/modules/auth/dto/auth-refresh-token.dto'
 import { AuthUsernameLoginDto } from '@/modules/auth/dto/auth-username-login.dto'
 import { AuthForgotPasswordDto } from '@/modules/auth/dto/auth-forgot-password.dto'
@@ -112,16 +110,13 @@ export class AuthService {
     return { ...tokens, user }
   }
 
-  async validateUserLogin(loginDto: AuthStudentIdLoginDto): Promise<IAuthResponse> {
+  async validateUserLogin(loginDto: AuthUsernameLoginDto): Promise<IAuthResponse> {
     const user = await this.usersService.findOne({
-      where: { studentId: loginDto.studentId },
+      where: { username: loginDto.username },
     })
 
     // check if user is blocked
     this.usersService.isLocked(user)
-
-    // check role
-    // if (user.role !== ROLE_ENUM.USER) HttpNotFound('Tài khoản không hợp lệ.')
 
     const isValidPassword = await bcrypt.compare(loginDto.password, user.password)
 
@@ -152,6 +147,7 @@ export class AuthService {
     })
 
     // Check if user is blocked, don't send email
+    // this function will return http exception if user is blocked
     this.usersService.isLocked(user)
 
     const forgotPasswordToken = this.jwtService.sign(
@@ -205,15 +201,13 @@ export class AuthService {
     return { user }
   }
 
-  async updateInformation(id: number, dto: AuthAdminUpdateDto | AuthUserUpdateDto) {
-    await this.usersService.update(id, dto)
-    const user = await this.usersService.findOne({ where: { id } })
-    return { user }
+  updateInformation(id: number, dto: AuthAdminUpdateDto | AuthUserUpdateDto) {
+    return this.usersService.update(id, dto)
   }
 
-  async refreshToken(refreshToken: AuthRefreshTokenDto) {
+  async refreshToken(dto: AuthRefreshTokenDto) {
     try {
-      const payload = this.jwtService.verify(refreshToken.refreshToken)
+      const payload = this.jwtService.verify(dto.refreshToken)
 
       // It must be refresh token
       if (payload.type !== TOKEN_TYPE_ENUM.REFRESH_TOKEN)
@@ -222,11 +216,6 @@ export class AuthService {
       const user = await this.usersService.findOne({
         where: { id: payload.id },
       })
-
-      // Check if user exists or being removed
-      if (!user) {
-        throw new UnauthorizedException('Lỗi refresh token')
-      }
 
       const tokens = this.createTokens(user)
       return tokens

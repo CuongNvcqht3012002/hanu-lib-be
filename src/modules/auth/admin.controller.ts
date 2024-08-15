@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Patch, Post, SerializeOptions, UseGuards } from '@nestjs/common'
+import { Body, Controller, Get, Patch, Post, UseGuards } from '@nestjs/common'
 import { AuthService } from '@/modules/auth/service'
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger'
 import { AuthResetPasswordDto } from 'src/modules/auth/dto/auth-reset-password.dto'
@@ -12,6 +12,7 @@ import { CurrentUser } from 'src/decorators/current-user.decorator'
 import { AuthRefreshTokenDto } from 'src/modules/auth/dto/auth-refresh-token.dto'
 import { AuthUsernameLoginDto } from '@/modules/auth/dto/auth-username-login.dto'
 import { AuthAdminUpdateDto } from '@/modules/auth/dto/auth-admin-update.dto'
+import { AuthUpdatePassword } from '@/modules/auth/dto/auth-update-password.dto'
 
 @ApiTags('Auth')
 @Controller('admin/auth')
@@ -19,9 +20,6 @@ export class AdminAuthController {
   constructor(public service: AuthService) {}
 
   @ApiOperation({ summary: 'Admin - Login' })
-  @SerializeOptions({
-    groups: [ROLE_ENUM.ADMIN, ROLE_ENUM.SUB_ADMIN],
-  })
   @Post('email/login')
   public adminLogin(@Body() dto: AuthUsernameLoginDto) {
     return this.service.validateAdminLogin(dto)
@@ -41,9 +39,6 @@ export class AdminAuthController {
 
   @ApiOperation({ summary: 'Admin - Get information' })
   @ApiBearerAuth()
-  @SerializeOptions({
-    groups: [ROLE_ENUM.ADMIN, ROLE_ENUM.SUB_ADMIN],
-  })
   @Get('me')
   @Roles(ROLE_ENUM.SUB_ADMIN)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
@@ -53,9 +48,6 @@ export class AdminAuthController {
 
   @ApiOperation({ summary: 'Admin - Update information' })
   @ApiBearerAuth()
-  @SerializeOptions({
-    groups: [ROLE_ENUM.ADMIN, ROLE_ENUM.SUB_ADMIN],
-  })
   @Patch('me')
   @Roles(ROLE_ENUM.SUB_ADMIN)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
@@ -63,9 +55,18 @@ export class AdminAuthController {
     return this.service.updateInformation(user.id, dto)
   }
 
+  @ApiOperation({ summary: 'Admin - Update password' })
+  @ApiBearerAuth()
+  @Patch('update-password')
+  @Roles(ROLE_ENUM.SUB_ADMIN)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  public updatePassword(@CurrentUser() user: User, @Body() dto: AuthUpdatePassword) {
+    return this.service.updatePassword(user, dto)
+  }
+
   @ApiOperation({ summary: 'Admin - Refresh token' })
   @Post('refresh-token')
-  public refreshToken(@Body() refreshToken: AuthRefreshTokenDto) {
-    return this.service.refreshToken(refreshToken)
+  public refreshToken(@Body() dto: AuthRefreshTokenDto) {
+    return this.service.refreshToken(dto)
   }
 }

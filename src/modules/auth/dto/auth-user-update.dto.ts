@@ -1,9 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsNotEmpty, IsOptional, IsPhoneNumber, MinLength, Validate } from 'class-validator'
+import { IsNotEmpty, IsOptional, IsPhoneNumber, Validate } from 'class-validator'
 import { Transform } from 'class-transformer'
 import { IsNotExist } from '@/utils/validations/is-not-exist.validator'
+import { ContextAwareDto } from '@/utils/validations/context-aware.dto'
 
-export class AuthUserUpdateDto {
+export class AuthUserUpdateDto extends ContextAwareDto {
   @ApiProperty({ example: '+1234567890' })
   @Transform(({ value }) => value?.trim())
   @IsPhoneNumber('VN', { message: 'Số điện thoại không hợp lệ' })
@@ -17,8 +18,4 @@ export class AuthUserUpdateDto {
   @IsNotEmpty({ message: 'Họ và tên không được để trống' })
   @IsOptional()
   fullName?: string
-
-  @ApiProperty({ example: '2024-12-31T23:59:59Z' })
-  @IsOptional()
-  expiredAt?: Date
 }

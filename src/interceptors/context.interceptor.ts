@@ -11,8 +11,9 @@ export class ContextInterceptor implements NestInterceptor {
     const request = context.switchToHttp().getRequest()
 
     request.body.context = {
-      // just want to accept params
+      // just want to accept params, userId
       params: request.params,
+      userId: request.user ? request.user.id : null,
       // query: request.query,
       // user: request.user,
     }
