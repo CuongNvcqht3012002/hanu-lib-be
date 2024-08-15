@@ -18,7 +18,6 @@ import { MailerModule } from '@nestjs-modules/mailer'
 import { AppController } from '@/modules/app/controller'
 import { AppService } from '@/modules/app/service'
 import { AuthModule } from '@/modules/auth/module'
-import { UploadModule } from '@/modules/upload/upload.module'
 import { MailConfigService } from '@/modules/mail/mail-config.service'
 import { GroupModule } from '@/modules/permission/group.module'
 import { RoomsModule } from '@/modules/rooms/module'
@@ -66,10 +65,9 @@ import { IsExist } from '@/utils/validations/is-exist.validator'
 
     AuthModule,
     UsersModule,
-    GroupModule,
     RoomsModule,
     OrdersModule,
-    UploadModule,
+    GroupModule,
   ],
 
   providers: [
