@@ -1,5 +1,6 @@
 import { LockQueryDto } from '@/modules/lock/dto/lock-query.dto'
 import { ToggleLockReaderDto } from '@/modules/lock/dto/toggle-lock-reader.dto'
+import { UpdateLockReaderDto } from '@/modules/lock/dto/update-lock-reader.dto'
 import { LockService } from '@/modules/lock/service'
 import { RIGHT_ENUM } from '@/modules/permission/enums/right.enum'
 import { Rights } from '@/modules/permission/guard/rights.decorator'
@@ -19,7 +20,8 @@ import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
 export class AdminLocksController {
   constructor(private readonly locksService: LockService) {}
 
-  @ApiOperation({ summary: 'Admin - Toggle lock user' })
+  // API can be lock or unlock user
+  @ApiOperation({ summary: 'Admin - Create lock user' })
   @Post()
   @Rights(RIGHT_ENUM.TOGGLE_LOCK_READER)
   adminToggleLockReader(@Body() dto: ToggleLockReaderDto) {
@@ -48,10 +50,11 @@ export class AdminLocksController {
     })
   }
 
+  // can only update reason
   @ApiOperation({ summary: 'Admin - Update lock' })
   @Patch(':id')
   @Rights(RIGHT_ENUM.UPDATE_READER)
-  updateOne(@Param('id') id: number, @Body() dto: ToggleLockReaderDto) {
+  updateOne(@Param('id') id: number, @Body() dto: UpdateLockReaderDto) {
     return this.locksService.update(id, dto)
   }
 
