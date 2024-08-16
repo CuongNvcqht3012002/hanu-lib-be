@@ -8,6 +8,6 @@ export class UpdateGroupInUserDto {
 
   @ApiProperty({ example: 1 })
   @IsNumber()
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'userId không được để trống' })
   userId: number
 }

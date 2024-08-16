@@ -27,21 +27,6 @@ export class GroupService extends CoreService<Group> {
     })
   }
 
-  async updateGroupsInUser(userId: number, groupIds: number[]) {
-    const user = await this.userRepository.findOne({
-      where: { id: userId },
-      relations: ['groups'],
-    })
-
-    if (!user) {
-      HttpNotFound()
-    }
-
-    const groups = await this.groupRepository.findBy({ id: In(groupIds) })
-    user.groups = groups
-    return this.userRepository.save(user)
-  }
-
   async updateRightsInGroup(groupId: number, rightsIds: number[]) {
     const group = await this.getAllRightsOfGroup(groupId)
 
@@ -56,5 +41,20 @@ export class GroupService extends CoreService<Group> {
       where: { id: userId },
       relations: ['groups'],
     })
+  }
+
+  async updateGroupsInUser(userId: number, groupIds: number[]) {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+      relations: ['groups'],
+    })
+
+    if (!user) {
+      HttpNotFound()
+    }
+
+    const groups = await this.groupRepository.findBy({ id: In(groupIds) })
+    user.groups = groups
+    return this.userRepository.save(user)
   }
 }

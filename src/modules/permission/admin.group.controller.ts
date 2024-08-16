@@ -46,7 +46,7 @@ export class AdminGroupController {
     return this.groupService.softDelete(id)
   }
 
-  // Right
+  // User - Group - Right
   @Get(':id/rights')
   @ApiOperation({ summary: 'Admin - Get all rights of one group' })
   getAllRightsOfGroup(@Param('id') id: number) {
@@ -59,15 +59,15 @@ export class AdminGroupController {
     return this.groupService.updateRightsInGroup(id, dto.rightsIds)
   }
 
-  @Put('/users/update-groups')
-  @ApiOperation({ summary: 'Admin - Update groups for a user' })
-  updateGroupsInUser(@Body() dto: UpdateGroupInUserDto) {
-    return this.groupService.updateGroupsInUser(dto.userId, dto.groupsIds)
-  }
-
   @Get('/users/:id/groups')
-  @ApiOperation({ summary: 'Admin - Get all groups of a user' })
+  @ApiOperation({ summary: 'Admin - Get all groups of one user' })
   getAllGroupsOfUser(@Param('id') id: number) {
     return this.groupService.getAllGroupsOfUser(id)
+  }
+
+  @Put('/users/update-groups')
+  @ApiOperation({ summary: 'Admin - Update groups in a user' })
+  updateGroupsInUser(@Body() dto: UpdateGroupInUserDto) {
+    return this.groupService.updateGroupsInUser(dto.userId, dto.groupsIds)
   }
 }

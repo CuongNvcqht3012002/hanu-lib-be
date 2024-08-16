@@ -12,6 +12,7 @@ export const rightMap = {
   [RIGHT_ENUM.VIEW_EMPLOYEES]: { tag: 'employee', name: 'Xem danh sách cán bộ' },
   [RIGHT_ENUM.CREATE_EMPLOYEE]: { tag: 'employee', name: 'Thêm tài khoản cán bộ' },
   [RIGHT_ENUM.UPDATE_EMPLOYEE]: { tag: 'employee', name: 'Sửa tài khoản cán bộ' },
+  [RIGHT_ENUM.TOGGLE_LOCK_EMPLOYEE]: { tag: 'employee', name: 'Khóa/Mở khóa tài khoản cán bộ' },
   [RIGHT_ENUM.DELETE_EMPLOYEE]: { tag: 'employee', name: 'Xóa tài khoản cán bộ' },
 
   // Room Management

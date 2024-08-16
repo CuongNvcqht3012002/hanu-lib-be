@@ -1,3 +1,4 @@
+import { CoreService } from '@/utils/core/core-service'
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Group } from 'src/modules/permission/entities/group.entity'
@@ -9,7 +10,7 @@ import { HttpBadRequest, HttpNotFound } from 'src/utils/throw-exception'
 import { Repository } from 'typeorm'
 
 @Injectable()
-export class RightService {
+export class RightService extends CoreService<Right> {
   constructor(
     @InjectRepository(Right)
     private readonly rightRepository: Repository<Right>,
@@ -17,10 +18,8 @@ export class RightService {
     private readonly groupRepository: Repository<Group>,
     @InjectRepository(User)
     private readonly userRepository: Repository<User>
-  ) {}
-
-  findAll(): Promise<Right[]> {
-    return this.rightRepository.find()
+  ) {
+    super(rightRepository)
   }
 
   validateRightMap() {
