@@ -3,19 +3,19 @@ import { ORDER_STATUS_ENUM } from '@/modules/orders/enums/order_status'
 import { Room } from 'src/modules/rooms/entities/room.entity'
 import { User } from 'src/modules/users/entities/user.entity'
 import { CoreEntity } from 'src/utils/core/core-entity'
-import { Entity, Column, ManyToOne, JoinColumn, Index, Unique } from 'typeorm'
+import { Entity, Column, ManyToOne, JoinColumn, Index } from 'typeorm'
 
 @Entity()
 @Index(['userId', 'roomId'])
 export class Order extends CoreEntity {
-  @ManyToOne(() => User, (user) => user.orders, { nullable: false })
+  @ManyToOne(() => User, (user) => user.orders, { nullable: true })
   @JoinColumn()
   user: User
 
   @Column({ nullable: true })
   userId: number
 
-  @ManyToOne(() => Room, (room) => room.orders, { nullable: false })
+  @ManyToOne(() => Room, (room) => room.orders, { nullable: true })
   room: Room
 
   @Column({ nullable: true })
@@ -30,12 +30,6 @@ export class Order extends CoreEntity {
 
   @Column({ type: 'date', nullable: false })
   usageDay: Date
-
-  @Column({ nullable: true })
-  studentId2: string
-
-  @Column({ nullable: true })
-  studentId3: string
 
   @Column({ nullable: true })
   reason: string

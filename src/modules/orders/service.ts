@@ -3,11 +3,10 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Between, In, Repository } from 'typeorm'
 import { Order } from '@/modules/orders/entities/order.entity'
 import { CoreService } from 'src/utils/core/core-service'
-import { CreateOrderDto } from 'src/modules/orders/dto/create-order.dto'
+import { UserCreateOrderDto } from '@/modules/orders/dto/user-create-order.dto'
 import { UpdateOrderDto } from 'src/modules/orders/dto/update-order.dto'
 import { ORDER_STATUS_ENUM } from '@/modules/orders/enums/order_status'
 import { HttpBadRequest } from 'src/utils/throw-exception'
-import { IPaginationOptions } from '@/utils/types/pagination-options'
 
 @Injectable()
 export class OrdersService extends CoreService<Order> {
@@ -18,7 +17,18 @@ export class OrdersService extends CoreService<Order> {
     super(ordersRepository)
   }
 
-  async createOrder(userId: number, createOrderDto: CreateOrderDto) {
+  // ==== ADMIN ====
+  adminUpdateOrder(id: number, updateOrderDto: UpdateOrderDto) {
+    const { status, reason } = updateOrderDto
+
+    return this.update(id, {
+      status,
+      reason: status === ORDER_STATUS_ENUM.CANCELLED ? reason || 'Admin hủy đơn đặt phòng' : reason,
+    })
+  }
+
+  // ==== USER ====
+  async userCreateOrder(userId: number, createOrderDto: UserCreateOrderDto) {
     const { roomId, shift, usageDay } = createOrderDto
     const day = new Date(usageDay)
     const today = new Date()
@@ -47,68 +57,15 @@ export class OrdersService extends CoreService<Order> {
     }
 
     // Create the new order
-    const newOrder = this.ordersRepository.create({
+    return this.create({
       ...createOrderDto,
       userId,
-    })
-
-    return this.ordersRepository.save(newOrder)
-  }
-
-  userFindOrderList(
-    userId: number,
-    { page, limit, status }: IPaginationOptions & { status?: ORDER_STATUS_ENUM }
-  ) {
-    return this.findManyWithPagination(
-      { page, limit },
-      {
-        where: {
-          userId,
-          status,
-        },
-        relations: ['user', 'room'],
-      }
-    )
-  }
-
-  adminFindOrderList({
-    page,
-    limit,
-    status,
-  }: {
-    page: number
-    limit: number
-    status?: ORDER_STATUS_ENUM
-  }) {
-    return this.findManyWithPagination(
-      { page, limit },
-      {
-        where: { status },
-        relations: ['user', 'room'],
-      }
-    )
-  }
-
-  adminFindOneOrder({ id }: { id: number }) {
-    return this.ordersRepository.findOneOrFail({
-      where: {
-        id,
-      },
-      relations: ['user', 'room'],
-    })
-  }
-
-  userFindOneOrder({ id, userId }: { id: number; userId: number }) {
-    return this.ordersRepository.findOneOrFail({
-      where: {
-        id,
-        userId,
-      },
-      relations: ['user', 'room'],
     })
   }
 
   async userUpdateOrder(id: number, updateOrderDto: UpdateOrderDto, userId: number) {
+    const { status, reason } = updateOrderDto
+
     const order = await this.findOne({
       where: {
         id,
@@ -120,17 +77,13 @@ export class OrdersService extends CoreService<Order> {
       HttpBadRequest('Bạn không thể cập nhật trạng thái của đơn hàng này')
     }
 
-    if (updateOrderDto.status !== ORDER_STATUS_ENUM.CANCELLED) {
+    if (status !== ORDER_STATUS_ENUM.CANCELLED) {
       HttpBadRequest('Bạn chỉ có thể hủy đặt phòng')
     }
 
-    return this.ordersRepository.save({
-      id,
-      ...updateOrderDto,
+    return this.ordersRepository.update(id, {
+      status,
+      reason: status === ORDER_STATUS_ENUM.CANCELLED ? reason || 'User hủy đơn đặt phòng' : reason,
     })
-  }
-
-  adminUpdateOrder(id: number, updateOrderDto: UpdateOrderDto) {
-    return this.update(id, updateOrderDto)
   }
 }

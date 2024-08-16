@@ -1,15 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-  Query,
-  SerializeOptions,
-  UseGuards,
-} from '@nestjs/common'
+import { Body, Controller, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common'
 import { OrdersService } from '@/modules/orders/service'
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { ROLE_ENUM } from 'src/modules/roles/roles.enum'
@@ -19,27 +8,43 @@ import { RolesGuard } from 'src/modules/roles/roles.guard'
 import { CurrentUser } from 'src/decorators/current-user.decorator'
 import { User } from 'src/modules/users/entities/user.entity'
 import { UpdateOrderDto } from 'src/modules/orders/dto/update-order.dto'
-import { CreateOrderDto } from '@/modules/orders/dto/create-order.dto'
+import { UserCreateOrderDto } from '@/modules/orders/dto/user-create-order.dto'
 import { OrderQueryDto } from '@/modules/orders/dto/query-dto.dto'
 
 @ApiBearerAuth()
-@Roles(ROLE_ENUM.USER, ROLE_ENUM.SUB_ADMIN)
+@Roles(ROLE_ENUM.USER)
 @UseGuards(AuthGuard('jwt'), RolesGuard)
 @ApiTags('Orders')
 @Controller('orders')
 export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
-  @ApiOperation({ summary: 'User - Get list own orders' })
+  @ApiOperation({ summary: 'User - Get my order list' })
   @Get()
   findList(@CurrentUser() user: User, @Query() query: OrderQueryDto) {
-    return this.ordersService.userFindOrderList(user.id, query)
+    const { page, limit, status } = query
+    return this.ordersService.findManyWithPagination(
+      { page, limit },
+      {
+        where: {
+          userId: user.id,
+          status,
+        },
+        relations: ['user', 'room'],
+      }
+    )
   }
 
   @ApiOperation({ summary: 'User -  Get Detail Order' })
   @Get(':id')
   findOne(@Param('id') id: number, @CurrentUser() user: User) {
-    return this.ordersService.userFindOneOrder({ id, userId: user.id })
+    return this.ordersService.findOne({
+      where: {
+        id,
+        userId: user.id,
+      },
+      relations: ['user', 'room'],
+    })
   }
 
   @ApiOperation({ summary: 'User - Update Order' })
@@ -54,7 +59,7 @@ export class OrdersController {
 
   @ApiOperation({ summary: 'User - Create Order' })
   @Post()
-  create(@Body() createOrderDto: CreateOrderDto, @CurrentUser() user: User) {
-    return this.ordersService.createOrder(user.id, createOrderDto)
+  create(@Body() createOrderDto: UserCreateOrderDto, @CurrentUser() user: User) {
+    return this.ordersService.userCreateOrder(user.id, createOrderDto)
   }
 }

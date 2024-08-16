@@ -8,7 +8,7 @@ import { RolesGuard } from 'src/modules/roles/roles.guard'
 import { SHIFT_TIME_ENUM } from '@/modules/orders/enums/shift_time'
 
 @ApiBearerAuth()
-@Roles(ROLE_ENUM.USER, ROLE_ENUM.SUB_ADMIN)
+@Roles(ROLE_ENUM.USER)
 @UseGuards(AuthGuard('jwt'), RolesGuard)
 @ApiTags('Rooms')
 @Controller('rooms')
