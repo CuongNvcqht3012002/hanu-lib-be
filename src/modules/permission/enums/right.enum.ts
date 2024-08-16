@@ -10,7 +10,6 @@ export enum RIGHT_ENUM {
   VIEW_EMPLOYEES = 'VIEW_EMPLOYEES', // View list of employees
   CREATE_EMPLOYEE = 'CREATE_EMPLOYEE', // Create an employee account
   UPDATE_EMPLOYEE = 'UPDATE_EMPLOYEE', // Update employee account (Edit personal information)
-  TOGGLE_LOCK_EMPLOYEE = 'TOGGLE_LOCK_EMPLOYEE', // Toggle lock status of employee account
   DELETE_EMPLOYEE = 'DELETE_EMPLOYEE', // Delete employee account (Admin can view deletion history with timestamp and reason)
 
   // Group Room Management

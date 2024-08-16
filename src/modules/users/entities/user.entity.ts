@@ -12,6 +12,7 @@ import { Group } from 'src/modules/permission/entities/group.entity'
 import { Order } from 'src/modules/orders/entities/order.entity'
 import { CoreEntity } from '@/utils/core/core-entity'
 import { ROLE_ENUM } from '@/modules/roles/roles.enum'
+import { LockRecord } from '@/modules/lock/entities/lockRecord.entity'
 
 @Entity()
 export class User extends CoreEntity {
@@ -58,4 +59,7 @@ export class User extends CoreEntity {
     if (this.username) return
     this.username = this.email.split('@')[0]
   }
+
+  @OneToMany(() => LockRecord, (lock) => lock.user)
+  lockRecords: LockRecord[]
 }

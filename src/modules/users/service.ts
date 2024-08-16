@@ -51,15 +51,6 @@ export class UsersService extends CoreService<User> {
     })
   }
 
-  async toggleLockReader(userId: number, isLocked: boolean) {
-    const user = await this.findOne({ where: { id: userId } })
-
-    user.isLocked = isLocked
-    user.countFailedLoginAttempts = 0
-
-    return this.update(user.id, user)
-  }
-
   async createReader(dto: AdminCreateReaderDto) {
     const usernameAndPassword = await this.createUsernameAndPasswordFromEmail(
       dto.email,
