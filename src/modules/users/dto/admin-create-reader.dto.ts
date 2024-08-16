@@ -20,7 +20,8 @@ export class AdminCreateReaderDto extends ContextAwareDto {
   })
   @Transform(({ value }) => value?.trim())
   @IsNotEmpty({ message: 'Mã sinh viên/bạn đọc không được để trống' })
-  username: string
+  @IsOptional()
+  username?: string
 
   @ApiProperty()
   @Validate(IsNotExist, ['User'], {

@@ -29,8 +29,8 @@ export class UsersService extends CoreService<User> {
   // if email is abc@gmail.com
   // username = abc
   // password = abc
-  async createUsernameAndPasswordFromEmail(email: string) {
-    const username = email.split('@')[0]
+  async createUsernameAndPasswordFromEmail(email: string, usernameInput = '') {
+    const username = usernameInput || email.split('@')[0]
     // create password = username
     const password = await encryptPassword(username)
 
@@ -39,12 +39,15 @@ export class UsersService extends CoreService<User> {
 
   // EMPLOYEES
   async createSubAdmin(dto: AdminCreateEmployeeDto) {
-    const usernameAndPassword = await this.createUsernameAndPasswordFromEmail(dto.email)
+    const usernameAndPassword = await this.createUsernameAndPasswordFromEmail(
+      dto.email,
+      dto.username
+    )
 
     return this.create({
-      ...dto,
       role: ROLE_ENUM.SUB_ADMIN,
       ...usernameAndPassword,
+      ...dto,
     })
   }
 
@@ -58,12 +61,15 @@ export class UsersService extends CoreService<User> {
   }
 
   async createReader(dto: AdminCreateReaderDto) {
-    const usernameAndPassword = await this.createUsernameAndPasswordFromEmail(dto.email)
+    const usernameAndPassword = await this.createUsernameAndPasswordFromEmail(
+      dto.email,
+      dto.username
+    )
 
     return this.create({
-      ...dto,
       role: ROLE_ENUM.USER,
       ...usernameAndPassword,
+      ...dto,
     })
   }
 }
