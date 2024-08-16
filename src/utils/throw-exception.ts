@@ -15,23 +15,38 @@ const ErrorMessages = {
 }
 
 function HttpNotFound(message = '') {
-  throw new NotFoundException(message || ErrorMessages.NOT_FOUND)
+  throw new NotFoundException({
+    statusCode: 404,
+    error: message || ErrorMessages.NOT_FOUND,
+  })
 }
 
 function HttpBadRequest(message = '') {
-  throw new BadRequestException(message || ErrorMessages.BAD_REQUEST)
+  throw new BadRequestException({
+    statusCode: 400,
+    error: message || ErrorMessages.BAD_REQUEST,
+  })
 }
 
 function HttpUnprocessableEntity(message = '') {
-  throw new UnprocessableEntityException(message || ErrorMessages.UNPROCESSABLE_ENTITY)
+  throw new UnprocessableEntityException({
+    statusCode: 422,
+    error: message || ErrorMessages.UNPROCESSABLE_ENTITY,
+  })
 }
 
 function HttpForbidden(message = '') {
-  throw new ForbiddenException(message || ErrorMessages.FORBIDDEN)
+  throw new ForbiddenException({
+    statusCode: 403,
+    error: message || ErrorMessages.FORBIDDEN,
+  })
 }
 
 function HttpUnauthorized(message = '') {
-  throw new UnauthorizedException(message || ErrorMessages.UNAUTHORIZED)
+  throw new UnauthorizedException({
+    statusCode: 401,
+    error: message || ErrorMessages.UNAUTHORIZED,
+  })
 }
 
 export {

@@ -1,12 +1,13 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Between, In, Repository } from 'typeorm'
+import { In, Repository } from 'typeorm'
 import { Order } from '@/modules/orders/entities/order.entity'
 import { CoreService } from 'src/utils/core/core-service'
 import { UserCreateOrderDto } from '@/modules/orders/dto/user-create-order.dto'
 import { UpdateOrderDto } from 'src/modules/orders/dto/update-order.dto'
 import { ORDER_STATUS_ENUM } from '@/modules/orders/enums/order_status'
 import { HttpBadRequest } from 'src/utils/throw-exception'
+import { convertTo24Hour } from '@/utils/libs/time'
 
 @Injectable()
 export class OrdersService extends CoreService<Order> {
@@ -31,23 +32,31 @@ export class OrdersService extends CoreService<Order> {
   async userCreateOrder(userId: number, createOrderDto: UserCreateOrderDto) {
     const { roomId, shift, usageDay } = createOrderDto
     const day = new Date(usageDay)
+
     const today = new Date()
+    const currentHour = today.getHours()
+
+    day.setHours(0, 0, 0, 0)
     today.setHours(0, 0, 0, 0)
 
     if (day < today) {
-      HttpBadRequest('Bạn không thể đặt lịch trước ngày hiện tại')
+      HttpBadRequest('Không thể đặt phòng cho những ngày đã qua')
     }
 
-    // Adjust the date to the start and end of the day
-    const startOfDay = new Date(day.getFullYear(), day.getMonth(), day.getDate(), 0, 0, 0)
-    const endOfDay = new Date(day.getFullYear(), day.getMonth(), day.getDate(), 23, 59, 59)
+    // If booking for today, check if the shift time has already passed
+    if (day.getTime() === today.getTime()) {
+      const shiftStartHour = convertTo24Hour(shift.split('-')[0])
+      if (currentHour >= shiftStartHour) {
+        HttpBadRequest('Không thể đặt phòng cho những khung giờ đã qua')
+      }
+    }
 
     // Check for existing orders with the same room, shift, and day with status PENDING or ACCEPTED
     const existingOrder = await this.ordersRepository.findOne({
       where: {
         roomId,
         shift,
-        usageDay: Between(startOfDay, endOfDay),
+        usageDay: day,
         status: In([ORDER_STATUS_ENUM.PENDING, ORDER_STATUS_ENUM.ACCEPTED]),
       },
     })
@@ -60,6 +69,7 @@ export class OrdersService extends CoreService<Order> {
     return this.create({
       ...createOrderDto,
       userId,
+      usageDay: day,
     })
   }
 
