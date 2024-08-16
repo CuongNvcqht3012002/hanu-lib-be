@@ -17,6 +17,7 @@ import { AuthAdminUpdateDto } from '@/modules/auth/dto/auth-admin-update.dto'
 import { AuthUserUpdateDto } from '@/modules/auth/dto/auth-user-update.dto'
 import { AuthUpdatePassword } from '@/modules/auth/dto/auth-update-password.dto'
 import { UsersService } from '@/modules/users/service'
+import { LockService } from '@/modules/lock/service'
 
 @Injectable()
 export class AuthService {
@@ -24,7 +25,8 @@ export class AuthService {
     private jwtService: JwtService,
     private usersService: UsersService,
     private mailService: MailService,
-    private configService: ConfigService
+    private configService: ConfigService,
+    private locksService: LockService
   ) {}
 
   createTokens(user: User) {
@@ -114,7 +116,7 @@ export class AuthService {
     })
 
     // check if user is blocked
-    this.usersService.isLocked(user)
+    this.locksService.isLocked(user)
 
     const isValidPassword = await bcrypt.compare(loginDto.password, user.password)
 
@@ -126,8 +128,10 @@ export class AuthService {
       if (count === 4) {
         await this.usersService.update(user.id, { isLocked: true })
         HttpUnprocessableEntity(
-          'Bạn đã đăng nhập sai quá 5 lần. Tài khoản của bạn đã bị khóa. Vui lòng liên hệ ban quản lý thư viện để được hỗ trợ.'
+          'Bạn đã đăng nhập sai 5 lần. Tài khoản của bạn đã bị khóa. Vui lòng liên hệ ban quản lý thư viện để được hỗ trợ.'
         )
+
+        this.locksService.systemLockUser(user.id, 'Hệ thống khóa tài khoản do đăng nhập sai 5 lần')
       }
 
       HttpUnprocessableEntity('Mật khẩu không chính xác.')
@@ -152,7 +156,7 @@ export class AuthService {
 
     // Check if user is blocked, don't send email
     // this function will return http exception if user is blocked
-    this.usersService.isLocked(user)
+    this.locksService.isLocked(user)
 
     const forgotPasswordToken = this.jwtService.sign(
       {

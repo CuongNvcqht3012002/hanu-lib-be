@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { User } from '@/modules/users/entities/user.entity'
 import { CoreService } from 'src/utils/core/core-service'
-import { HttpBadRequest } from 'src/utils/throw-exception'
 import { ROLE_ENUM } from 'src/modules/roles/roles.enum'
 import { AdminCreateEmployeeDto } from '@/modules/users/dto/admin-create-employee'
 import { AdminCreateReaderDto } from '@/modules/users/dto/admin-create-reader.dto'
@@ -17,14 +16,6 @@ export class UsersService extends CoreService<User> {
   ) {
     super(usersRepository)
   }
-
-  isLocked(user: User) {
-    if (user.isLocked)
-      HttpBadRequest(
-        'Tài khoản của bạn đang bị khóa. Vui lòng liên hệ ban quản lý thư viện để được hỗ trợ.'
-      )
-  }
-
   // this function will be used by managers
   // if email is abc@gmail.com
   // username = abc

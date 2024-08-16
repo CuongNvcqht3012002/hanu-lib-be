@@ -25,6 +25,7 @@ import { OrdersModule } from '@/modules/orders/module'
 import { UsersModule } from '@/modules/users/module'
 import { IsNotExist } from '@/utils/validations/is-not-exist.validator'
 import { IsExist } from '@/utils/validations/is-exist.validator'
+import { LocksModule } from '@/modules/lock/module'
 
 @Module({
   imports: [
@@ -65,6 +66,7 @@ import { IsExist } from '@/utils/validations/is-exist.validator'
 
     AuthModule,
     UsersModule,
+    LocksModule,
     RoomsModule,
     OrdersModule,
     GroupModule,

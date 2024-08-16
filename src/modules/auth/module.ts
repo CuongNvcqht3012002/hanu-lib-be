@@ -10,12 +10,14 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { User } from 'src/modules/users/entities/user.entity'
 import { AdminAuthController } from '@/modules/auth/admin.controller'
 import { UsersModule } from '@/modules/users/module'
+import { LocksModule } from '@/modules/lock/module'
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
     MailModule,
     UsersModule,
+    LocksModule,
     PassportModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
