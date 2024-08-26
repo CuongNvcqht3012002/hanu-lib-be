@@ -4,13 +4,16 @@ import { User } from '@/modules/users/entities/user.entity'
 
 @Entity()
 export class LockRecord extends CoreEntity {
-  @ManyToOne(() => User, (user) => user.orders, { nullable: true })
+  @ManyToOne(() => User, (user) => user.orders)
   @JoinColumn()
   user: User
 
-  @Column({ nullable: true })
+  @Column()
   userId: number
 
   @Column()
   reason: string
+
+  @Column({ nullable: true })
+  isLocked: boolean
 }

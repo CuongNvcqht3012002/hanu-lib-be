@@ -7,4 +7,8 @@ export class OrderQueryDto extends CoreQueryDto {
   @ApiProperty({ required: false, type: 'enum', enum: ORDER_STATUS_ENUM })
   @IsOptional()
   status?: ORDER_STATUS_ENUM
+
+  @ApiProperty({ required: false })
+  @IsOptional()
+  userId?: number
 }

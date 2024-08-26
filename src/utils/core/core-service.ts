@@ -14,7 +14,13 @@ export abstract class CoreService<T extends CoreEntity> {
   }
 
   async findAll(options?: FindManyOptions<T>): Promise<{ data: T[]; count: number }> {
-    const [data, count] = await this.repo.findAndCount(options)
+    const [data, count] = await this.repo.findAndCount({
+      ...options,
+      order: {
+        id: 'ASC',
+        ...options?.order,
+      },
+    })
     return { data, count }
   }
 
@@ -29,6 +35,10 @@ export abstract class CoreService<T extends CoreEntity> {
       ...findOptions,
       take: limit,
       skip,
+      order: {
+        id: 'ASC',
+        ...findOptions?.order,
+      },
     })
 
     return infinityPagination({ data, count }, paginationOptions)

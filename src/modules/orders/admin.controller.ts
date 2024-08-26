@@ -24,11 +24,11 @@ export class AdminOrdersController {
   @Get()
   @Rights(RIGHT_ENUM.VIEW_ORDERS)
   findList(@Query() query: OrderQueryDto) {
-    const { page, limit, status } = query
+    const { page, limit, status, userId } = query
     return this.ordersService.findManyWithPagination(
       { page, limit },
       {
-        where: { status },
+        where: { status, userId },
         relations: ['user', 'room'],
       }
     )
