@@ -13,11 +13,11 @@ export class MailService {
     await this.mailerService.sendMail({
       to: mailData.to,
       subject: 'Xác nhận Email',
-      template: 'confirm-email',
+      template: 'verify-email',
       context: {
         title: 'Xác nhận Email',
         logo: `${this.configService.get('app.backendDomain')}/images/logo-hanu.png`,
-        url: `${this.configService.get('app.frontendDomain')}/auth/confirm-email/${
+        url: `${this.configService.get('app.frontendDomain')}/auth/verify-email/${
           mailData.data.verifyEmailToken
         }`,
         year: new Date().getFullYear(),
