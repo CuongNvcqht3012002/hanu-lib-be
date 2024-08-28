@@ -17,7 +17,7 @@ export class MailService {
       context: {
         title: 'Xác nhận Email',
         logo: `${this.configService.get('app.backendDomain')}/images/logo-hanu.png`,
-        url: `${this.configService.get('app.frontendDomain')}/auth/verify-email/${
+        url: `${this.configService.get('app.frontendDomain')}/auth/verify-email?token=${
           mailData.data.verifyEmailToken
         }`,
         year: new Date().getFullYear(),
