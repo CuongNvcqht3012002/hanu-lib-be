@@ -184,7 +184,7 @@ export class AuthService {
       const { type, email } = payload
 
       if (type !== TOKEN_TYPE_ENUM.FORGOT_PASSWORD)
-        HttpUnprocessableEntity('Token không hợp lệ hoặc đã hết hạn.')
+        HttpUnprocessableEntity('Đặt lại mật khẩu thất bại. Token không hợp lệ hoặc đã hết hạn.')
 
       const user = await this.usersService.findOne({
         where: { email },
@@ -193,7 +193,7 @@ export class AuthService {
       const password = await encryptPassword(newPassword)
       this.usersService.update(user.id, { password, countFailedLoginAttempts: 0 })
     } catch (error) {
-      HttpUnprocessableEntity('Token không hợp lệ hoặc đã hết hạn.')
+      HttpUnprocessableEntity('Đặt lại mật khẩu thất bại. Token không hợp lệ hoặc đã hết hạn.')
     }
   }
 
