@@ -88,7 +88,7 @@ export class AuthService {
       return { user }
     } catch (error) {
       error.error = 'Đường dẫn không hợp lệ hoặc đã hết hạn.'
-      HttpUnprocessableEntity(error)
+      HttpUnprocessableEntity(error.error)
     }
   }
 
