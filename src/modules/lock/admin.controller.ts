@@ -28,15 +28,15 @@ export class AdminLocksController {
     return this.locksService.adminToggleLockReader(dto)
   }
 
-  @ApiOperation({ summary: 'Admin -  Get list lock of one user' })
+  @ApiOperation({ summary: 'Admin -  Get list lock of one user or all locks' })
   @Get()
   @Rights(RIGHT_ENUM.VIEW_READERS)
   findList(@Query() query: LockQueryDto) {
-    const { page, limit, userId } = query
+    const { page, limit, userId, isLocked } = query
     return this.locksService.findManyWithPagination(
       { page, limit },
       {
-        where: { userId },
+        where: { userId, isLocked },
       }
     )
   }
